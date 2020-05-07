@@ -1,6 +1,6 @@
 <article class="card" itemscope itemtype="http://schema.org/BlogPosting">
     <div class="card-header">
-        <!-- <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1> -->
+        <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
         <h4 class="post-meta">{{ page.summary }}</h4>
         <p class="post-summary">Posted by : {% if page.author %}
             <img src="{{site.url}}{{site.baseurl}}/assets/img/{{ site.author_logo }}" class="author-profile-img">
@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div class="card-body" itemprop="articleBody">
+    <div class="card-body" itemprop="articleBody " style="font-size:18px;">
         <img class="card-img-top" src="{{site.url}}{{site.baseurl}}/assets/img/posts/{{ page.thumbnail }}" alt="{{ post.title }}">
         <br/> <br/>
         {{ content }}
