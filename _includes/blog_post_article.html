@@ -4,10 +4,19 @@
         <h4 class="post-meta">{{ page.summary }}</h4>
         <p class="post-summary">Posted by : {% if page.author %}
             <img src="{{site.url}}{{site.baseurl}}/assets/img/{{ site.author_logo }}" class="author-profile-img">
+            <!-- &#10026; -->
             <span itemprop="author" itemscope itemtype="http://schema.org/Person">
                 <span itemprop="name">{{ page.author }}</span>
-            </span>{% endif %} at
+            </span>{% endif %}
+            &#10026;
             <time datetime="{{ page.date }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>
+            &#10026;
+            <!-- Adding minutes read -->
+            <span class="reading-time" title="Estimated read time">
+                {% assign words = content | strip_html | number_of_words %}
+                {{ words | divided_by: 180 | plus: 1 }} min read.
+            </span>
+              
         </p>
         <span class="disqus-comment-count" data-disqus-identifier="{{ page.url }}"></span>
         <div class="post-categories">
