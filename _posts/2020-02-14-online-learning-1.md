@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Online Machine Learing Basics
+title: What is Online Machine Learing?
 author: Lokesh Kumar
 date: '2020-05-07 13:00:00'
 category: 'Machine-Learning'
-summary: Understanding the process of answering a sequence of questions given knowledge of the correct answers to previous questions
-thumbnail: code.jpg
+summary: We understand the process of answering a sequence of questions given knowledge of the correct answers to previous questions
+thumbnail: Introduction to Online Learning.png
 commments: true
 ---
 ## Contents
