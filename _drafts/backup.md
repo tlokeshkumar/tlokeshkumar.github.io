@@ -1,18 +1,21 @@
 ---
 layout: post
-title: "Interpretable Linear Regression: Net Effects"
+title: Regression Meets Game Theory
 author: Lokesh Kumar
 date: '2020-05-09 17:00:00'
 category: 'Machine-Learning'
-summary: A regular problem in multiple regression is asserting the relative influence of the predictors in the model. Net Effects is a well known technique that is used to measure the shares that each predictor have on the target variable in the coefficient of multiple determination.
+summary: We address different methods to compute comparative importance of predictors in multiple linear regression. We also appreciate how ideas from co-operative game theory lends hands when models suffer from "multicollinearity"
 thumbnail: Regression meets Game Theory.png
 commments: true
 ---
 ## Contents
 * Standardized Multiple Regression Model
 * Revisiting R-squared for Regression Analysis ($$R^2$$)
-* Net Effects
-* Multicollinearity
+* Problems caused by Multicollinearity
+* Incremental Influence of Predictors in Multiple Determination
+* Incremental Net Effects
+* Co-operative Game Theory - Shapley Values
+* Grand Finale
 
 ## Standardized Multiple Regression Model
 
@@ -120,7 +123,6 @@ $$
 \end{equation}
 $$
 
-
 The regression model with the correlation transformed variables $$x_k^{*}, y^{*}$$ is called the **standardized regression model** and is defined formally as,
 
 $$
@@ -149,52 +151,6 @@ $$
     \end{aligned}
 \end{equation}
 $$
-
-Look below for a well commented code implementing the correlation transform and standardizing the dataset
-
-
-```python
-def standardize_dataset(X,y):
-    '''
-    Parameters
-    ---
-    X: Unnormalized Predictor data instances
-    y: Unnormalized target data instances
-
-    Returns
-    ---
-    Standardized X and y which can be used 
-    for other tasks
-    '''
-    # X = [x_1, x_2, ... x_n]
-    # no intercept term
-    # X = N x n matrix
-    # y = N dim vector
-    
-    # concatenating (X,y) to perform columnwise standardization
-    # dataset =  N x (n+1) matrix
-    dataset=np.c_[X,y]
-
-    # Taking mean along axis=0 => mean = N dim vector
-    mean = dataset.mean(axis=0)
-    sq_diff = (dataset-mean)**2
-    sq_diff = sq_diff.sum(axis=0)/(N-1)
-    
-    # Standard deviation taken along axis=0 (columns)
-    std = np.sqrt(sq_diff)
-    
-    # Aplying the Correlation Transform on the dataset
-    dataset = (dataset-mean)/(std*np.sqrt(N-1))
-    
-    # If beta is the true coefficients for the original model
-    # The transformed beta which is the solution for standardized model is 
-    # beta_reg=beta[1:]*std[:-1]/std[-1]
-    
-    X_norm=dataset[:,:-1]
-    Y_norm=dataset[:, -1]
-    return X_norm, Y_norm
-
-```
 
 > **Important Note:** 
 >
@@ -253,45 +209,6 @@ $$
 \end{equation}
 $$
 
-Lets code this and understand what we are exactly doing,
-
-```python
-# Note that these functions are a part of a class StandardizedLinearRegression
-# For complete code: https://github.com/tlokeshkumar/interpretable-linear-regression
-
-# Lets define a function set_XY(X, Y) which takes as input the data matrix (X) and 
-# the target vector (y)
-def set_XY(self, X, y):
-    '''
-    Parameters
-    ---
-    X: N x n data matrix
-    y: N dim vector
-
-    Computes the least squares solution and stores the estimated parameters
-    in self.beta_estimate
-    '''
-    self.X=X
-    self.y=y
-    
-    # Correlation Matrix of predictor variables
-    # C_{ij} = r_{ij} = correlation between x_i and x_j
-    # C_{ii} = 1, if X is standardized
-    self.C = self.X.T.dot(self.X)
-
-    # Correlation vector between target variables (y) and 
-    # predictor variables (x): r_{xy}
-    self.r = self.X.T.dot(self.y)
-
-    # Check for 1x1 dimension
-    if(len(self.C.shape)):
-        # C^{-1}r
-        self.beta_estimate = np.linalg.inv(self.C).dot(self.r)
-    else:
-        # (1/C)*r (if C is scalar)
-        self.beta_estimate = (1/self.C)*self.r
-```
-
 
 ## Revisiting R-squared for Regression Analysis ($$R^2$$)
 
@@ -305,46 +222,6 @@ R^2 = 1 - \frac{RSS}{TSS}
 $$
 
 where $$R^2$$ represents the coefficient of multiple determination, $$RSS$$ is the residual sum of squares a.k.a $$S^2$$ (see $$\eqref{sqError}$$). $$TSS$$ is the total sum of squares which measures the deviation of $$y$$ from its mean $$\overline{y}; = \sum_i (y_i - \overline{y})^2$$. Its now clear that $$TSS = 1$$ as the data is standardized. 
-
-```python
-# Function to find RSS: Residual Sum of Squares (S^2)
-def RSS(self):
-    '''
-    Residual sum of squares
-    '''
-    # Estimated y
-    y_pred = self.X.dot(self.beta_estimate)
-    
-    # difference in prediction to true value
-    # y_true-y_pred
-    error=self.y - y_pred
-    
-    # Squared sum of differences = Residual Sum of Squares
-    return (error).T.dot(error)
-
-# Function to find TSS: Total Sum of Squares
-def TSS(self):
-    '''
-    TSS for an intercept model
-    (Y = \beta_0)
-    '''
-    # Squared sum of differences between y and its mean
-    return (y-y.mean()).T.dot(y-y.mean())
-
-# Function to calculate R^2
-def r2(self):
-    '''
-    R^2 = 1 - (RSS/TSS)
-
-    For standardized models,
-    R^2 = 1 - RSS
-    (TSS=1)
-    '''
-    return 1 - self.RSS()/self.TSS()
-```
-
-Now coming back to the analysis,
-
 
 Substituting $$\eqref{sqError}$$ in $$\eqref{r2}$$ we get,
 
@@ -418,3 +295,192 @@ $$
 **Does $$NEF_j < 0$$ mean predictor $$j$$ must be removed from multiple regression formulation?**
 
 NO. We will show later in the post that **any additional variable increases the coefficient of multiple determination $$R^2$$**. $$NEF_j < 0$$ means that the definition of net effects as $$r_{yj}a_j$$ is inadequate and not really completely representative of variable's influence. This calls for modification of net effects formulation (motivation for incremental net effects)!
+
+## Incremental Influence of Predictors in Multiple Determination
+
+**Objective**: In order to better understand the predictor's influence on the regression model, we now use the **incremental approach** (i,e) try to whats the marginal gain/loss in terms of performance does the inclusion of additional variable has on the multiple regression model.
+
+
+Lets now aim to calculate the influence of $$x_n$$ (the last standardized variable) in the standardized regression model. The matrix $$C$$ (correlation matrix of all $$x$$'s) can be written in a block form,
+
+$$
+\begin{equation}
+C = \begin{pmatrix}
+A & \vec{\rho} \\
+\vec{\rho}^T & 1
+\end{pmatrix}
+\end{equation}
+$$
+
+where $$A \in \mathbb{R}^{n-1 \times n-1}$$ matrix of correlation of $$(x_1, ... ,x_{n-1})$$  among themselves and $$\vec{\rho} \in \mathbb{R}^{n-1 \times 1}$$ is the correlation of $$(x_1, ... ,x_{n-1})$$ with $$x_n$$. Using the result from block matrix inversion, we get
+
+$$
+\begin{equation}
+C^{-1} = \begin{pmatrix}
+A^{-1} + q^{-1}\vec{b}\ \vec{b}^T & -q^{-1}\vec{b} \\
+-q^{-1}\vec{b} & q^{-1}
+\end{pmatrix}
+\label{cinv_block}
+\end{equation}
+$$
+
+where,
+
+$$
+\begin{equation}
+    \begin{aligned}
+    \vec{b} &= A^{-1}\vec{\rho}  \\
+    q &= 1-\vec{\rho}^T\vec{b}
+    \end{aligned}
+    \label{blockInv}
+\end{equation}
+$$
+
+Anything similar you can see with $$\vec{b}$$ in $$\eqref{blockInv}$$ and $$\vec{a}$$ in $$\eqref{stanLSSol}$$? Indeed! So $$\vec{b}$$ is the vector of regression coefficients when $$x_n$$ is regressed for, from other $$n-1$$ variables $$x_1, ..., x_{n-1}$$. Following the notations from $$\eqref{newStan}$$, $$\vec{b}$$ is the least squares solution for
+
+$$
+\begin{equation}
+x_n = b_{1}x_1+b_{2}x_2+...+b_{n-1}x_{n-1} + \epsilon
+\label{xn_model}
+\end{equation}
+$$
+
+Similarly, observing $$\vec{\rho}^T\vec{b}$$ in $$\eqref{blockInv}$$ and noticing that it has similar similar to $$R^2$$ in $$\eqref{r2_decomp}$$ ($$\vec{a} \equiv \vec{b}, \vec{\rho} \equiv \vec{r}$$). So we denote $$\vec{\rho}^T\vec{b}$$ as $$R^2_{n.(-n)} = R^2_{n.123...n-1}$$ (i.e) the multiple determination coefficient for model $$\eqref{xn_model}$$. $$q$$ in $$\eqref{blockInv}$$ can be written as,
+
+$$
+\begin{equation}
+q = 1 - R^2_{n.-n}
+\label{q_exp}
+\end{equation}
+$$
+
+Using $$\eqref{cinv_block}$$ in $$\eqref{stanLSSol}$$ for obtaining the solution for $$\eqref{newStan}$$,
+
+$$
+\begin{equation}
+    \begin{aligned}
+    \vec{a} = C^{-1}\vec{r} &=  \begin{pmatrix}
+    A^{-1} + q^{-1}\vec{b}\ \vec{b}^T & -q^{-1}\vec{b} \\
+    -q^{-1}\vec{b} & q^{-1}
+    \end{pmatrix}
+    \begin{pmatrix}
+    \vec{r}_{y, -n}\\
+    r_{yn}
+    \end{pmatrix}\\
+    &=
+    \begin{pmatrix}
+    A^{-1}\vec{r}_{y,-n} - q^{-1}(r_{yn}-\vec{b}^T\vec{r}_{y,-n})\vec{b})\\
+    q^{-1}(r_{yn}-\vec{b}^T\vec{r}_{y,-n})
+    \end{pmatrix}
+    \end{aligned}
+    \label{inc_soln}
+\end{equation}
+$$
+
+where $$\vec{r} \in \mathbb{R}^n$$ a vector of all correlations between $$\{x_1,...,x_n\}$$ and $$y$$. $$r_{y,-n} \in \mathbb{R}^{n-1}$$ is the first $$n-1$$ correlations in $$r_y$$ and $$r_{yn}$$ is the correlation between $$x_n$$ and $$y$$ (last element in $$r_y$$).
+
+In $$\eqref{inc_soln}$$, $$A^{-1}\vec{r}_{y,-n}$$ is the solution for the model, (multiple regression model with predictor variables $$x_1,.x_2,...,x_n$$),
+
+$$
+\begin{equation}
+y = \beta_1x_1 + \beta_2x_2 + ... + \beta_{n-1}x_{n-1}
+\label{n_1_model}
+\end{equation}
+$$
+
+so we continue with the same notation in $$\eqref{n_1_model}$$, taking inspiration from $$\eqref{stanLSSol}$$, we get
+
+$$
+\begin{equation}
+\vec{\beta} = A^{-1}\vec{r}_{y,-n} \in \mathbb{R}^{n-1}
+\end{equation}
+$$
+
+The interpretation of this model, is that without $$x_n$$ how other features $$x_1, x_2, ..., x_{n-1}$$ influence the predictor variables. Now to understand the incremental gains obtained by including $$x_n$$ in regression analysis, we try to write $$R^2$$ of model $$\eqref{newStan}$$ in terms of $$R^2$$ of model as defined in $$\eqref{n_1_model}$$ + some entity depending on $$x_n$$.
+
+Calculating $$R^2$$ of the model $$\eqref{newStan}$$ using $$\eqref{r2_decomp}$$ ($$a$$ defined in $$\eqref{inc_soln}$$),
+
+$$
+\begin{equation}
+    \begin{aligned}
+    R^2 &= \begin{pmatrix}
+        \vec{r}_{y,-n} \\
+        r_{yn}
+        \end{pmatrix}
+        \begin{pmatrix}
+        A^{-1}\vec{r}_{y,-n} - q^{-1}(r_{yn}-\vec{b}^T\vec{r}_{y,-n})\vec{b})\\
+        q^{-1}(r_{yn}-\vec{b}^T\vec{r}_{y,-n})
+        \end{pmatrix} \\
+        &= \vec{r}^T_{y,-n}A^{-1}\vec{r}_{y,-n} + q^{-1}\left(r_{yn}-\vec{b}^T\vec{r}_{y,-n}\right)^2
+    \end{aligned}
+    \label{r2_marginal}
+\end{equation}
+$$
+
+Now, what is $$R^2_{n,-n}$$ (i.e) the $$R^2$$ of model $$\eqref{n_1_model}$$? We can use the expressions $$\eqref{r2_decomp}$$ ($$\vec{a} \equiv \vec{\beta}, \vec{r} \equiv \vec{r}_{y,n-1}$$), and write it as,
+
+$$
+\begin{equation}
+R^2_{y,-n} = \vec{r}^T_{y,-n}\vec{\beta} = \vec{r}^T_{y,-n}A^{-1}\vec{r}_{y,-n}
+\label{r2_n_1}
+\end{equation}
+$$
+
+Applying $$\eqref{r2_n_1}$$ in $$\eqref{r2_marginal}$$, (and substituting $$q$$ from $$\eqref{q_exp}$$)
+
+$$
+\begin{equation}
+R^2 = R^2_{y,-n} + \left(r_{yn}-\vec{b}^T\vec{r}_{y,-n}\right)^2/\left(1 - R^2_{n,-n}\right)
+\label{inc_r2}
+\end{equation}
+$$
+
+We see that addition of $$x_n$$ is clearly benificial as it increases the $$R^2$$ by a non-negative amount.
+
+## Incremental Net Effect
+
+
+From out analysis its clear that **addition of extra variables contribute in a non-negative way to $$R^2$$**. Now in just few steps, a new interesting result emerges, that is **incremental net effect** of a predictor.
+
+Continuing our analysis, from the last row of $$\eqref{inc_soln}$$, we get 
+
+$$
+\begin{equation}
+a_n = q^{-1}\left(r_{yn}-\vec{b}^T\vec{r}_{y,-n}\right)
+\label{an_value}
+\end{equation}
+$$
+
+Substituting $$\eqref{an_value}$$, $$\eqref{q_exp}$$ in $$\eqref{inc_r2}$$,
+
+$$
+\begin{equation}
+R^2 = R^2_{y, -n} + \overbrace{a_n^2\left(1-R^2_{n,-n}\right)}^{U_n}
+\end{equation}
+$$
+
+**Interpretation of the equation**: $$R^2$$ of model $$\eqref{newStan}$$ can be decomposed to the sum of $$R^2$$ of $$n-1$$ variables and the incremental value $$U_n = a_n^2\left(1-R^2_{n,-n}\right)$$ which depends on
+
+* $$a_n^2$$ the coefficient of the nth predictor
+* $$1 - R^2_{n,-n}$$ where $$R^2_{n,-n}$$ is the multiple determination in model $$\eqref{n_1_model}$$. As $$R^2 = 1-S^2$$ from $$\eqref{r2_decomp}$$, this term actually is the least squares error $$\eqref{lsError}$$ for model $$\eqref{n_1_model}$$.
+
+Without loss of generality, assuming any predictor $$j$$ instead of $$x_n$$, we can write
+
+$$
+\begin{equation}
+R^2 = R^2_{y,-j} + U_j
+\label{inc_r2_j}
+\end{equation}
+$$
+
+**The incremental gain in $$R^2$$ due to addition of predictor $$j$$ is given  by $$U_j$$ which is a measure of usefulness of the predictor $$j$$**.
+
+Averaging $$\eqref{inc_r2_j}$$ for all n expressions, to combine all the marginal contributions from each predictor, we arrive at,
+
+$$
+\begin{equation}
+R^2 = \frac{1}{n}\sum_{j=1}^nR^2_{y,-j} + \sum_{j=1}^n\left(\frac{1}{n}U_j\right)
+\end{equation}
+$$
+
+**Note that incremental net effects is always positve, irrespective of whether influences of collinieariy is present or not**, unlike in the case of net effects defined in $$\eqref{dir_indir_nef}$$ which can be negative under correlated settings.
