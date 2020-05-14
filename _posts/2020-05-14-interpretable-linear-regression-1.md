@@ -147,15 +147,15 @@ $$
 
 and now algebraic manipulations and comparing coefficients from the generalized regression model, we get,
 
-
+$$
 \begin{equation}
 \begin{aligned}
-    \beta_k &= \frac{s_y}{s_k}\beta_k^{*}  \forall k \in \{1,2,..,n\} \\\\
+    \beta_k &= \frac{s_y}{s_k}\beta_k^{*} \\\\  \forall k \in \{1,2,..,n\} \\\\\\
     \beta_0 &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n
 \end{aligned}
 \end{equation}
+$$
 
-<!-- \beta_0 &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n -->
 
 Look below for a well-commented code implementing the correlation transform and standardizing the dataset
 
