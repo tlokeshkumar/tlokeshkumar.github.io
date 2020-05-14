@@ -48,7 +48,7 @@ $$
 Our main aim throughout the post will be to engage in answering **how each predictor ($$\beta_iX_i$$) influences the target variable estimation**. We also will try answering the question when our model suffers from multicollinearity (i.e) when predictors are highly correlated. 
 
 Lets take we have $$N$$ data samples and we write the above formulation in matrix form,
-$
+
 \begin{equation}
 \begin{bmatrix}
 x_{10}&x_{11}&x_{12}&\dots&x_{1n} \\
@@ -86,7 +86,18 @@ y_N
 
 X\vec{\beta}+\vec{\epsilon}=\vec{Y}
 \end{equation}
-$
+
+
+\begin{align}
+    \Phi(0,x) = \max_{u \in \mathcal{D}} \bigg[
+        \mathbb{E} & \Phi\left(1, 
+        x + \int_0^1 \sigma^2(s) \, \zeta(s) \, u_s \, ds
+        + \int_0^1 \sigma(s) \, dW_s
+    \right) \\\\\\\\
+        &- \frac{1}{2} \int_0^1 \sigma^2(s) \, \zeta(s) \,
+        \mathbb{E} u_s^2  \, ds
+    \bigg].
+\end{align}
 
 Let $$\vec{b}=[b_0, b_1, ..., b_n]^T$$ be the estimate of $$\beta$$ obtained by **least squares estimation**, 
 
