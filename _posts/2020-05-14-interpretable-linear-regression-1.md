@@ -54,7 +54,7 @@ x_{10} & x_{11} & x_{12} & \dots & x_{1n} \\\\\\\\
 x_{20} & x_{11} & x_{22} & \dots & x_{2n} \\\\\\\\
 \vdots & \vdots & \vdots & \dots & \vdots \\\\\\\\
 \vdots & \vdots & \vdots & \dots & \vdots \\\\\\\\
-x_{N0} & x_{N1} & x_{N2} & \dots & x_{Nn} \\\\\\\\
+x_{N0} & x_{N1} & x_{N2} & \dots & x_{Nn}
 \end{bmatrix}
 \begin{bmatrix}
 \beta_0 \\\\\\\\
@@ -106,6 +106,7 @@ Can you think of any problem here? What if there are some variables in $$X$$ whi
 
 Correlation transformation is simple modification of usual feature normalization procedure in machine learning. In feature normalization we make sure that each feature is centered (0 mean) and unit standard deviation. Standard feature normalization is given by these equations below,
 
+
 \begin{equation}
 \begin{aligned}
     (y_i)_{norm} &= \frac{y_i - \overline{y}}{s_y} \\\\\\\\
@@ -113,7 +114,9 @@ Correlation transformation is simple modification of usual feature normalization
 \end{aligned}
 \end{equation}
 
+
 where $$\overline{y}, \overline{x_k}$$ are means of $$y, x_k$$ columns respectively, and $$s_y, s_k$$ are their respective standard deviations. The correlation transformation requires **only** one alteration, that is,
+
 
 \begin{equation}
 \begin{aligned}
@@ -122,6 +125,7 @@ where $$\overline{y}, \overline{x_k}$$ are means of $$y, x_k$$ columns respectiv
 \end{aligned}
 \label{corTrans}
 \end{equation}
+
 
 The regression model with the correlation transformed variables $$x_k^{*}, y^{*}$$ is called the **standardized regression model** and is defined formally as,
 
@@ -143,12 +147,14 @@ $$
 
 and now algebraic manipulations and comparing coefficients from the generalized regression model, we get,
 
+
 \begin{equation}
 \begin{aligned}
-    \beta_k &= \frac{s_y}{s_k}\beta_k^{*} \ \ \ \ \forall k \in \{1,2,..,n\} \\\\\\\\
+    \beta_k &= \frac{s_y}{s_k}\beta_k^{*} \\\\ \\\\ \\\\ \\\\ \forall k \in \{1,2,..,n\} \\\\\\\\
     \beta_0 &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n
 \end{aligned}
 \end{equation}
+
 
 Look below for a well-commented code implementing the correlation transform and standardizing the dataset
 
