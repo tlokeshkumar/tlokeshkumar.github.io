@@ -49,15 +49,13 @@ Our main aim throughout the post will be to engage in answering **how each predi
 
 Lets take we have $$N$$ data samples and we write the above formulation in matrix form,
 
-\begin{equation}
-\begin{bmatrix}
+\begin{equation}\begin{bmatrix}
 x_{10} & x_{11} & x_{12} & \dots & x_{1n} \\\\\\\\
 x_{20} & x_{11} & x_{22} & \dots & x_{2n} \\\\\\\\
 \vdots & \vdots & \vdots & \dots & \vdots \\\\\\\\
 \vdots & \vdots & \vdots & \dots & \vdots \\\\\\\\
 x_{N0} & x_{N1} & x_{N2} & \dots & x_{Nn} \\\\\\\\
 \end{bmatrix}
-
 \begin{bmatrix}
 \beta_0 \\\\\\\\
 \beta_1 \\\\\\\\
@@ -72,7 +70,6 @@ x_{N0} & x_{N1} & x_{N2} & \dots & x_{Nn} \\\\\\\\
 \vdots \\\\\\\\
 \epsilon_m
 \end{bmatrix}
-
 =
 \begin{bmatrix}
 y_1 \\\\\\\\
@@ -81,9 +78,7 @@ y_2 \\\\\\\\
 \vdots \\\\\\\\
 y_N
 \end{bmatrix}
-
 \rightarrow
-
 X\vec{\beta}+\vec{\epsilon}=\vec{Y}
 \end{equation}
 
@@ -95,12 +90,7 @@ X\vec{\beta}+\vec{\epsilon}=\vec{Y}
 \end{aligned}
 \end{equation}
 
-\begin{equation}
-\begin{aligned}
-    x &= 6 \\\\\\\\
-    y &= 8
-\end{aligned}
-\end{equation}
+
 
 Let $$\vec{b}=[b_0, b_1, ..., b_n]^T$$ be the estimate of $$\beta$$ obtained by **least squares estimation**, 
 
@@ -117,20 +107,20 @@ Can you think of any problem here? What if there are some variables in $$X$$ whi
 Correlation transformation is simple modification of usual feature normalization procedure in machine learning. In feature normalization we make sure that each feature is centered (0 mean) and unit standard deviation. Standard feature normalization is given by these equations below,
 
 \begin{equation}
-    \begin{aligned}
-    (y_i)_{norm} &= \frac{y_i - \overline{y}}{s_y} \\
+\begin{aligned}
+    (y_i)_{norm} &= \frac{y_i - \overline{y}}{s_y} \\\\\\\\
     (x_{ik})_{norm} &= \frac{x_{ik} - \overline{x_k}}{s_k}
-    \end{aligned}
+\end{aligned}
 \end{equation}
 
 where $$\overline{y}, \overline{x_k}$$ are means of $$y, x_k$$ columns respectively, and $$s_y, s_k$$ are their respective standard deviations. The correlation transformation requires **only** one alteration, that is,
 
 \begin{equation}
-    \begin{aligned}
-    y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\
+\begin{aligned}
+    y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\\\\\\\
     x_{ik}^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{x_{ik} - \overline{x_k}}{s_k}\right) = \frac{1}{\sqrt{N-1}}(x_{ik})_{norm}
-    \end{aligned}
-    \label{corTrans}
+\end{aligned}
+\label{corTrans}
 \end{equation}
 
 The regression model with the correlation transformed variables $$x_k^{*}, y^{*}$$ is called the **standardized regression model** and is defined formally as,
@@ -154,10 +144,10 @@ $$
 and now algebraic manipulations and comparing coefficients from the generalized regression model, we get,
 
 \begin{equation}
-    \begin{aligned}
-    \beta_k &= \frac{s_y}{s_k}\beta_k^{*} \ \ \ \ \forall k \in \{1,2,..,n\} \\
+\begin{aligned}
+    \beta_k &= \frac{s_y}{s_k}\beta_k^{*} \ \ \ \ \forall k \in \{1,2,..,n\} \\\\\\\\
     \beta_0 &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n
-    \end{aligned}
+\end{aligned}
 \end{equation}
 
 Look below for a well-commented code implementing the correlation transform and standardizing the dataset
@@ -254,12 +244,12 @@ where $$C^{-1}$$ is the inverse correlation matrix. The square deviation (Residu
 
 
 \begin{equation}
-    \begin{aligned}
-    S^2 &= \left(\vec{y}-X\vec{a}\right)^T\left(\vec{y}-X\vec{a}\right)\\
-    &= \vec{y}^T\vec{y} - 2\vec{a}^T\left(X^T\vec{y}\right) + \vec{a}^T(X^TX)\vec{a} \\
+\begin{aligned}
+    S^2 &= \left(\vec{y}-X\vec{a}\right)^T\left(\vec{y}-X\vec{a}\right) \\\\\\\\
+    &= \vec{y}^T\vec{y} - 2\vec{a}^T\left(X^T\vec{y}\right) + \vec{a}^T(X^TX)\vec{a} \\\\\\\\
     &= 1 - 2\vec{a}^T\vec{r} + \vec{a}^TC\vec{a}
-    \end{aligned}
-    \label{sqError}
+\end{aligned}
+\label{sqError}
 \end{equation}
 
 
@@ -418,12 +408,12 @@ $$
 
 Ah! now the the direct and indirect influences represented by $$NEF$$ is clear. From the above equation, $$NEF_j = a_j^2 + a_j\sum_{k\ne j}r_{jk}a_k$$, which can be divided into direct and indirect counterparts,
 
-$$
+
 \begin{aligned}
-(NEF\ direct)_j &= a_j^2 \\
+(NEF\ direct)_j &= a_j^2 \\\\\\\\
 (NEF\ indirect)_j &= a_j\sum_{k\ne j}r_{jk}a_k
 \end{aligned}
-$$
+
 
 Let's see the code to get an even more clear picture of whats going on.
 
