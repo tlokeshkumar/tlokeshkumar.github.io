@@ -51,8 +51,7 @@ Our main aim throughout the post will be to engage in answering **how each predi
 
 Lets take we have $$N$$ data samples and we write the above formulation in matrix form,
 
-$$
-\begin{equation}
+$$\begin{equation}
 \begin{bmatrix}
 x_{10}&x_{11}&x_{12}&\dots&x_{1n} \\
 x_{20}&x_{11}&x_{22}&\dots&x_{2n} \\
@@ -88,8 +87,7 @@ y_N
 \Longleftrightarrow
 
 X\vec{\beta}+\vec{\epsilon}=\vec{Y}
-\end{equation}
-$$
+\end{equation}$$
 
 Let $$\vec{b}=[b_0, b_1, ..., b_n]^T$$ be the estimate of $$\beta$$ obtained by **least squares estimation**, 
 
@@ -105,26 +103,22 @@ Can you think of any problem here? What if there are some variables in $$X$$ whi
 
 Correlation transformation is simple modification of usual feature normalization procedure in machine learning. In feature normalization we make sure that each feature is centered (0 mean) and unit standard deviation. Standard feature normalization is given by these equations below,
 
-$$
-\begin{equation}
+$$\begin{equation}
     \begin{aligned}
     (y_i)_{norm} &= \frac{y_i - \overline{y}}{s_y} \\
     (x_{ik})_{norm} &= \frac{x_{ik} - \overline{x_k}}{s_k}
     \end{aligned}
-\end{equation}
-$$
+\end{equation}$$
 
 where $$\overline{y}, \overline{x_k}$$ are means of $$y, x_k$$ columns respectively, and $$s_y, s_k$$ are their respective standard deviations. The correlation transformation requires **only** one alteration, that is,
 
-$$
-\begin{equation}
+$$\begin{equation}
     \begin{aligned}
     y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\
     x_{ik}^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{x_{ik} - \overline{x_k}}{s_k}\right) = \frac{1}{\sqrt{N-1}}(x_{ik})_{norm}
     \end{aligned}
     \label{corTrans}
-\end{equation}
-$$
+\end{equation}$$
 
 The regression model with the correlation transformed variables $$x_k^{*}, y^{*}$$ is called the **standardized regression model** and is defined formally as,
 
