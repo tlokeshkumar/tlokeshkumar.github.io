@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Regression Meets Game Theory
+title: "Math Geeks Exclusive: Interpretability Analysis in Linear Regression"
 author: Lokesh Kumar
 date: '2020-05-09 17:00:00'
 category: 'Machine-Learning'
-summary: We address different methods to compute comparative importance of predictors in multiple linear regression. We also appreciate how ideas from co-operative game theory lends hands when models suffer from "multicollinearity"
+summary: A detailed analysis of 
 thumbnail: Regression meets Game Theory.png
 commments: true
 ---

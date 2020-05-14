@@ -84,11 +84,11 @@ y_2 \\
 \vdots \\
 y_N
 \end{bmatrix}
-\end{equation}
 
 \Longleftrightarrow
 
 X\vec{\beta}+\vec{\epsilon}=\vec{Y}
+\end{equation}
 $$
 
 Let $$\vec{b}=[b_0, b_1, ..., b_n]^T$$ be the estimate of $$\beta$$ obtained by **least squares estimation**, 
@@ -116,14 +116,15 @@ $$
 
 where $$\overline{y}, \overline{x_k}$$ are means of $$y, x_k$$ columns respectively, and $$s_y, s_k$$ are their respective standard deviations. The correlation transformation requires **only** one alteration, that is,
 
-$$\begin{equation}
+$$
+\begin{equation}
     \begin{aligned}
     y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\
     x_{ik}^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{x_{ik} - \overline{x_k}}{s_k}\right) = \frac{1}{\sqrt{N-1}}(x_{ik})_{norm}
-    \label{corTrans}
     \end{aligned}
-\end{equation}$$
-
+    \label{corTrans}
+\end{equation}
+$$
 
 The regression model with the correlation transformed variables $$x_k^{*}, y^{*}$$ is called the **standardized regression model** and is defined formally as,
 
