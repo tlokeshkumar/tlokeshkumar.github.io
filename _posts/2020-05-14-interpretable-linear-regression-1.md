@@ -51,11 +51,11 @@ Lets take we have $$N$$ data samples and we write the above formulation in matri
 
 \begin{equation}
 \begin{bmatrix}
-x_{10}&x_{11}&x_{12}&\dots&x_{1n} \\\\\\\\
-x_{20}&x_{11}&x_{22}&\dots&x_{2n} \\\\\\\\
-\vdots&\vdots&\vdots&\dots&\vdots \\\\\\\\
-\vdots&\vdots&\vdots&\dots&\vdots \\\\\\\\
-x_{N0}&x_{N1}&x_{N2}&\dots&x_{Nn} \\\\\\\\
+x_{10} & x_{11} & x_{12} & \dots & x_{1n} \\\\\\\\
+x_{20} & x_{11} & x_{22} & \dots & x_{2n} \\\\\\\\
+\vdots & \vdots & \vdots & \dots & \vdots \\\\\\\\
+\vdots & \vdots & \vdots & \dots & \vdots \\\\\\\\
+x_{N0} & x_{N1} & x_{N2} & \dots & x_{Nn} \\\\\\\\
 \end{bmatrix}
 
 \begin{bmatrix}
@@ -82,11 +82,18 @@ y_2 \\\\\\\\
 y_N
 \end{bmatrix}
 
-\implies
+\rightarrow
 
 X\vec{\beta}+\vec{\epsilon}=\vec{Y}
 \end{equation}
 
+
+\begin{equation}
+\begin{aligned}
+    x &= 6 \\\\\\\\
+    y &= 8
+\end{aligned}
+\end{equation}
 
 \begin{equation}
 \begin{aligned}
