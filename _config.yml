@@ -1,5 +1,5 @@
 title: Lokesh Kumar
-subtitle: Lets freakin go!
+subtitle: Learning Machine Learning and AI
 description: >- # this means to ignore newlines until "baseurl:"
   
 
@@ -25,6 +25,9 @@ author_email: "lokesh.karpagam@gmail.com"
 author_location: India
 # author_website_url: "http://johndoe.com"
 
+# For internal links in blogs
+kramdown:
+    auto_ids: true
 
 author_work_experiences:
             - company_name: Google

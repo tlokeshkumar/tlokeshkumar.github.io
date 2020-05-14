@@ -2,19 +2,25 @@
 layout: post
 title: "Interpretable Linear Regression: Net Effects"
 author: Lokesh Kumar
-date: '2020-05-09 17:00:00'
+date: '2020-05-14 15:02:00'
 category: 'Machine-Learning'
-summary: A regular problem in multiple regression is asserting the relative influence of the predictors in the model. Net Effects is a well known technique that is used to measure the shares that each predictor have on the target variable in the coefficient of multiple determination.
-thumbnail: Regression meets Game Theory.png
-commments: true
+summary: A regular problem in multiple regression is asserting the relative influence of the predictors in the model. Net Effects is a well-known technique that is used to measure the shares that each predictor have on the target variable in the coefficient of multiple determination.
+thumbnail: Interpretable Regression - 1.png
+comments: true
 ---
-## Contents
-* Standardized Multiple Regression Model
-* Revisiting R-squared for Regression Analysis ($$R^2$$)
-* Net Effects
-* Multicollinearity
+# Contents
+
+{: #contents}
+* <a href="#standardized_models"><font size="5">Standardized Multiple Regression Model</font>
+* <a href="#r2_explanation"><font size="5">Revisiting R-squared for Regression Analysis</font>
+* <a href="#NetEffects"><font size="5">Net Effects</font>
+* <a href="#Multicollinearity"><font size="5">Problems caused by Multicollinearity</font>
+
+Code used in the blog can be accessed on [GitHub](https://github.com/tlokeshkumar/interpretable-linear-regression)
 
 ## Standardized Multiple Regression Model
+{: #standardized_models}
+<a href="#contents"><button>Back to Contents</button></a>
 
 Consider we have $n$ predictor variables $$\left(X_1,...,X_n\right)$$ and target variable $$Y$$. For each data point $$i$$, these variables assume the form $$\left(x_{1i},...,x_{ni}, y_i\right)$$ respectively. Now, we can formulate the linear model
 
@@ -93,7 +99,7 @@ X^TX\vec{b}=X^T\vec{Y} \Longrightarrow \vec{b} = \left(X^TX\right)^{-1}X^T\vec{Y
 \end{equation}
 $$
 
-Can you think of any problem here? What if there are some variables in $$X$$ which are very small relative to others (orders of magnitude separation)? What if some features in $$X$$ are correlated with other variables? This will cause ill-conditioning of $$X^TX$$ which inturn results in numerical issues during its inversion. More precisely, we might potentially suffer from **round off errors** in computation. So, we need to reparameterize the regression model into **standardized regression model** using **correlation transform** to circumvent this issue.
+Can you think of any problem here? What if there are some variables in $$X$$ which are very small relative to others (orders of magnitude separation)? What if some features in $$X$$ are correlated with other variables? This will cause ill-conditioning of $$X^TX$$ which in turn results in numerical issues during its inversion. More precisely, we might potentially suffer from **round off errors** in computation. So, we need to reparameterize the regression model into **standardized regression model** using **correlation transform** to circumvent this issue.
 
 ### Correlation Transformation
 
@@ -150,7 +156,7 @@ $$
 \end{equation}
 $$
 
-Look below for a well commented code implementing the correlation transform and standardizing the dataset
+Look below for a well-commented code implementing the correlation transform and standardizing the dataset
 
 
 ```python
@@ -240,7 +246,7 @@ $$
 \end{equation}
 $$
 
-where $$C^{-1}$$ is the inverse correlation matrix. The square deviation can be represented in matrix form as,
+where $$C^{-1}$$ is the inverse correlation matrix. The square deviation (Residual Sum of Squares, $$RSS$$) can be represented in matrix form as,
 
 $$
 \begin{equation}
@@ -253,7 +259,7 @@ $$
 \end{equation}
 $$
 
-Lets code this and understand what we are exactly doing,
+Let's code this and understand what we are exactly doing,
 
 ```python
 # Note that these functions are a part of a class StandardizedLinearRegression
@@ -294,8 +300,25 @@ def set_XY(self, X, y):
 
 
 ## Revisiting R-squared for Regression Analysis ($$R^2$$)
+{: #r2_explanation }
+<a href="#contents"><button>Back to Contents</button></a>
 
-Regression fit quality can be quantified by **coefficient of multiple determination** which is defined as,
+Measuring the quality of the fit can be done in many ways. One such metric is to use the residual sum of squares $$S^2$$ $$\eqref{lsError}$$. We can also define a relative metric of performance, called the coefficient of determination or coefficient of multiple determination ($$R^2$$). To better appreciate what that is, 
+
+Let's consider a simple model, a constant where the effect of predictor variables are not considered.
+
+$$
+\begin{equation}
+y = a_0 + \epsilon
+\label{baseline}
+\end{equation}
+$$
+
+This will be our baseline model. So we will try to answer how well does our predictions $$y$$ improve when we consider model $$\eqref{genModel}$$ which captures linear relationships between predictor variables as opposed to a model $$\eqref{baseline}$$ which completely disregards such a relationship.
+
+You will immediately realize that $$\eqref{baseline}$$ solution is just the mean of the target variables ($$\bar{y}$$). The residual sum of squares of model $$\eqref{baseline}$$ is called $$TSS$$ (total sum of squares).
+
+Relative regression fit quality can be quantified by **coefficient of multiple determination** which is defined as,
 
 $$
 \begin{equation}
@@ -304,7 +327,9 @@ R^2 = 1 - \frac{RSS}{TSS}
 \end{equation}
 $$
 
-where $$R^2$$ represents the coefficient of multiple determination, $$RSS$$ is the residual sum of squares a.k.a $$S^2$$ (see $$\eqref{sqError}$$). $$TSS$$ is the total sum of squares which measures the deviation of $$y$$ from its mean $$\overline{y}; = \sum_i (y_i - \overline{y})^2$$. Its now clear that $$TSS = 1$$ as the data is standardized. 
+where $$R^2$$ represents the coefficient of multiple determination, $$RSS$$ is the residual sum of squares a.k.a $$S^2$$ (see $$\eqref{sqError}$$). $$TSS$$ is the total sum of squares which measures the deviation of $$y$$ from its mean $$\overline{y}; = \sum_i (y_i - \overline{y})^2$$. **$$R^2$$ is proportion reduction in squared error in using model $$\eqref{genModel}$$ instead of choosing a simple intercept model $$\eqref{baseline}$$**.
+
+Its now clear that $$TSS = 1$$ as the data is standardized. 
 
 ```python
 # Function to find RSS: Residual Sum of Squares (S^2)
@@ -343,6 +368,10 @@ def r2(self):
     return 1 - self.RSS()/self.TSS()
 ```
 
+## Net Effects
+{: #NetEffects }
+<a href="#contents"><button>Back to Contents</button></a>
+
 Now coming back to the analysis,
 
 
@@ -360,10 +389,11 @@ $$R^2$$ is a bounded entity which always lies between 0 to 1. $$\eqref{r2_decomp
 $$
 \begin{equation}
 R^2 = \sum_{j=1}^nr_{yj}a_j = \sum_{j=1}^n NEF_j
+\label{r2_nef}
 \end{equation}
 $$
 
-Take a moment and let this result sink in. The entities $$r_{yj}a_j$$ is called the **net effect of the $$j^{th}$$ predictor** ($$NEF_j$$). This quantity plays an important role in gauging the importance of individual predictors in multiple linear regression setting. **Net effect of a predictor $$j$$ is the total influence that predictor $$j$$ has on the target, considering both its direct effect and indirect effect (via correlation with other predictors).**
+Take a moment and let this result sink in. The entities $$r_{yj}a_j$$ is called the **net effect of the $$j^{th}$$ predictor** ($$NEF_j$$). This quantity plays an important role in gauging the importance of individual predictors in a multiple linear regression setting. **Net effect of a predictor $$j$$ is the total influence that predictor $$j$$ has on the target, considering both its direct effect and indirect effect (via correlation with other predictors).**
 
 To get a more clear picture, lets separate out the direct effect and indirect effect from $$NEF_j$$. Substitute $$\eqref{standLS}$$, $$\eqref{stanLSSol}$$ in $$\eqref{r2_decomp}$$ to get
 
@@ -391,21 +421,48 @@ $$
 \end{aligned}
 $$
 
-Now, we will briefly look into the details of multicollinearity problem in linear regression, and see why people make a huge issue out of it.
+Let's see the code to get an even more clear picture of whats going on.
+
+```python
+def net_effect(self):
+    '''
+    Returns a n dim vector of net effect of each predictor variable
+    
+    self.beta_estimate : The least squares solution for the standardized linear regression
+    self.r : Correlation vector between target variables (y) and predictor variables (x): r_{xy}
+            = X^Ty (in standardized multiple regression model)
+    '''
+    return self.beta_estimate*self.r
+```
+
+Visualizing net effects of each predictor variables and its corresponding regression coefficients, 
+
+**Specifications**
+
+* Given 10-dimensional feature vector
+* Noise follows Gaussian distribution
+* For the dataset generation code: [Visit my GitHub repo](https://github.com/tlokeshkumar/interpretable-linear-regression)
+
+{% include _plots/neteffects/netEffectsCoeff.html %}
+
+
+Now, we will briefly look into the details of the multicollinearity problem in linear regression, and see why people make a huge issue out of it.
 
 ## Problems caused by Multicollinearity
+{: #Multicollinearity }
+<a href="#contents"><button>Back to Contents</button></a>
 
-Multicollinearity arrises when the feature varaiables (predictor variables) are highly correlated among themselves. Some problems are listed below,
+Multicollinearity arrises when the feature variables (predictor variables) are highly correlated among themselves. Some problems are listed below,
 
-* Makes the parameter values sensitive. Values vary over a wide range when small change is made to the model. (like removing a feature, reducing the sample size, etc)
+* Makes the parameter values sensitive. Values vary over a wide range when a small change is made to the model. (like removing a feature, reducing the sample size, etc)
 
-* Estimated standard deviation of predictor variables become large (quantified by **Variance Inflation Factor**)
+* Estimated standard deviation of predictor variables becomes large (quantified by **Variance Inflation Factor**)
 
 * Signs of regression coefficients can be opposite to pair-wise correlations between target variable and the corresponding feature. $$(a_jr_{yj} < 0)$$
 
 * Statistical significance of regression coefficients becomes questionable, as regression coefficients need not now, reflect the statistical relation that exists among the predictor variable and the target variable.
 
-* Multicollinearity has bad effects on analysis of the influence of individual predictors (/variables) on the target variable.
+* Multicollinearity has bad effects on the analysis of the influence of individual predictors (/variables) on the target variable.
 
 To understand the problems of multicollinearity better, lets investigate $$NEF$$ has to say. Multicollinearity can change the sign of $$a_j$$ to opposite to that of the pairwise correlation $$r_{yj}$$, which means $$a_jr_{yj} = (NEF)_j < 0$$. What does this mean in terms of direct and indirect influence interpretation of net effect? As direct influence term in $$NEF_j \ge 0$$, it essentially means, that indirect influence is $$< 0$$ and overpowers direct influence. Analysing this with help of $$\eqref{dir_indir_nef}$$, 
 
@@ -417,4 +474,12 @@ $$
 
 **Does $$NEF_j < 0$$ mean predictor $$j$$ must be removed from multiple regression formulation?**
 
-NO. We will show later in the post that **any additional variable increases the coefficient of multiple determination $$R^2$$**. $$NEF_j < 0$$ means that the definition of net effects as $$r_{yj}a_j$$ is inadequate and not really completely representative of variable's influence. This calls for modification of net effects formulation (motivation for incremental net effects)!
+NO. We will show later in the post that **any additional variable increases the coefficient of multiple determination $$R^2$$**. $$NEF_j < 0$$ means that the definition of net effects as $$r_{yj}a_j$$ is inadequate and not completely representative of variable's influence. This calls for the modification of net effects formulation (motivation for incremental net effects)!
+
+As an example, let's take an example of a severely correlated dataset (synthetically generated, with the same parameters as above) and observe its $$NEF$$ and parameter coefficients,
+
+{% include _plots/neteffects/netEffectsSV.html %}
+
+In the above graph, you can see that NEF values for some predictors are **negative**, and since $$\eqref{r2_nef}$$ is valid irrespective of the presence of multicollinearity or not, we also notice some predictors having NEF values **$$> 1.0$$**. So **the notion of NEF values capturing influences of individual predictors breaks down.** 
+
+This calls for a more sophisticated and interesting measure called **Incremental Net Effects** which takes support from **co-operative game theory**, which I have also plotted in the above plot. You can notice how incremental net effects can spread the influence effectively among the predictors. Also, it has interesting properties like its always positive (even in the correlated case when net effects become negative) and like net effects, they sum up to $$R^2$$.
