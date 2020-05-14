@@ -116,15 +116,13 @@ $$
 
 where $$\overline{y}, \overline{x_k}$$ are means of $$y, x_k$$ columns respectively, and $$s_y, s_k$$ are their respective standard deviations. The correlation transformation requires **only** one alteration, that is,
 
-$$
-\begin{equation}
+$$\begin{equation}
     \begin{aligned}
     y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\
     x_{ik}^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{x_{ik} - \overline{x_k}}{s_k}\right) = \frac{1}{\sqrt{N-1}}(x_{ik})_{norm}
     \end{aligned}
     \label{corTrans}
-\end{equation}
-$$
+\end{equation}$$
 
 
 The regression model with the correlation transformed variables $$x_k^{*}, y^{*}$$ is called the **standardized regression model** and is defined formally as,
@@ -147,14 +145,12 @@ $$
 
 and now algebraic manipulations and comparing coefficients from the generalized regression model, we get,
 
-$$
-\begin{equation}
+$$\begin{equation}
     \begin{aligned}
     \beta_k &= \frac{s_y}{s_k}\beta_k^{*} \ \ \ \ \forall k \in \{1,2,..,n\} \\
     \beta_0 &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n
     \end{aligned}
-\end{equation}
-$$
+\end{equation}$$
 
 Look below for a well-commented code implementing the correlation transform and standardizing the dataset
 
