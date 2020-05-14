@@ -89,14 +89,12 @@ X\vec{\beta}+\vec{\epsilon}=\vec{Y}
 
 
 \begin{align}
-    \Phi(0,x) = \max_{u \in \mathcal{D}} \bigg[
-        \mathbb{E} & \Phi\left(1, 
-        x + \int_0^1 \sigma^2(s) \, \zeta(s) \, u_s \, ds
-        + \int_0^1 \sigma(s) \, dW_s
-    \right) \\\\\\\\
-        &- \frac{1}{2} \int_0^1 \sigma^2(s) \, \zeta(s) \,
-        \mathbb{E} u_s^2  \, ds
-    \bigg].
+    \left| \Phi_{\zeta_1} - \Phi_{\zeta_2} \right| 
+    &\leq \xi''(1) \int_0^1 |\zeta_1(t) - \zeta_2(t)| dt, \\
+    \left| \partial_x^k \Phi_{\zeta_1}(t,x) - 
+        \partial_x^k \Phi_{\zeta_2}(t,x)
+    \right| 
+    &\leq c_k \, \xi''(1) \int_0^1 |\zeta_1(t) - \zeta_2(t)| dt.
 \end{align}
 
 Let $$\vec{b}=[b_0, b_1, ..., b_n]^T$$ be the estimate of $$\beta$$ obtained by **least squares estimation**, 
