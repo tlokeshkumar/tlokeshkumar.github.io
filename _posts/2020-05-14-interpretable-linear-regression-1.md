@@ -147,14 +147,23 @@ $$
 
 and now algebraic manipulations and comparing coefficients from the generalized regression model, we get,
 
-$$
 \begin{equation}
 \begin{aligned}
     \beta_k &= \frac{s_y}{s_k}\beta_k^{*} \\\\  \forall k \in \{1,2,..,n\} \\\\\\
     \beta_0 &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n
 \end{aligned}
+\label{exy}
 \end{equation}
-$$
+
+
+\begin{equation}
+\begin{aligned}
+    S^2 &= \left(\vec{y}-X\vec{a}\right)^T\left(\vec{y}-X\vec{a}\right) \\\\\\\\
+    &= \vec{y}^T\vec{y} - 2\vec{a}^T\left(X^T\vec{y}\right) + \vec{a}^T(X^TX)\vec{a} \\\\\\\\
+    &= 1 - 2\vec{a}^T\vec{r} + \vec{a}^TC\vec{a}
+\end{aligned}
+\label{sqError}
+\end{equation}
 
 
 Look below for a well-commented code implementing the correlation transform and standardizing the dataset
