@@ -90,7 +90,7 @@ X\vec{\beta}+\vec{\epsilon}=\vec{Y}
 
 \begin{equation}
 \begin{aligned}
-    x &= 6 \\
+    x &= 6 \\\\\\\\
     y &= 8
 \end{aligned}
 \end{equation}
