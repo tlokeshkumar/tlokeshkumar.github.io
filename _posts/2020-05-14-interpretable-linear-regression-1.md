@@ -24,12 +24,10 @@ Code used in the blog can be accessed on [GitHub](https://github.com/tlokeshkuma
 
 Consider we have $n$ predictor variables $$\left(X_1,...,X_n\right)$$ and target variable $$Y$$. For each data point $$i$$, these variables assume the form $$\left(x_{1i},...,x_{ni}, y_i\right)$$ respectively. Now, we can formulate the linear model
 
-$$
 \begin{equation}
 y_i = \beta_0 + \beta_1x_{i1}+\beta_2x_{i2}+...\beta_nx_{in}+\epsilon_i
 \label{genModel}
 \end{equation}
-$$
 
 which is linear combination of the features, and $$\epsilon \sim \mathcal{N}(0, \sigma^2)$$. $$\eqref{genModel}$$ can also be rewritten as, 
 
@@ -50,7 +48,7 @@ $$
 Our main aim throughout the post will be to engage in answering **how each predictor ($$\beta_iX_i$$) influences the target variable estimation**. We also will try answering the question when our model suffers from multicollinearity (i.e) when predictors are highly correlated. 
 
 Lets take we have $$N$$ data samples and we write the above formulation in matrix form,
-
+$
 \begin{equation}
 \begin{bmatrix}
 x_{10}&x_{11}&x_{12}&\dots&x_{1n} \\
@@ -88,6 +86,7 @@ y_N
 
 X\vec{\beta}+\vec{\epsilon}=\vec{Y}
 \end{equation}
+$
 
 Let $$\vec{b}=[b_0, b_1, ..., b_n]^T$$ be the estimate of $$\beta$$ obtained by **least squares estimation**, 
 
