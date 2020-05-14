@@ -120,8 +120,8 @@ $$\begin{equation}
     \begin{aligned}
     y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\
     x_{ik}^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{x_{ik} - \overline{x_k}}{s_k}\right) = \frac{1}{\sqrt{N-1}}(x_{ik})_{norm}
-    \end{aligned}
     \label{corTrans}
+    \end{aligned}
 \end{equation}$$
 
 
