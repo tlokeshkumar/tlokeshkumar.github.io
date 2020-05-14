@@ -109,7 +109,7 @@ Correlation transformation is simple modification of usual feature normalization
 
 \begin{equation}
 \begin{aligned}
-    (y_i)_{norm} &= \frac{y_i - \overline{y}}{s_y} \\\\\\\\
+    (y_i)_{norm} &= \frac{y_i - \overline{y}}{s_y} \\\\
     (x_{ik})_{norm} &= \frac{x_{ik} - \overline{x_k}}{s_k}
 \end{aligned}
 \end{equation}
@@ -120,7 +120,7 @@ where $$\overline{y}, \overline{x_k}$$ are means of $$y, x_k$$ columns respectiv
 
 \begin{equation}
 \begin{aligned}
-    y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\\\\\\\
+    y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\\\
     x_{ik}^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{x_{ik} - \overline{x_k}}{s_k}\right) = \frac{1}{\sqrt{N-1}}(x_{ik})_{norm}
 \end{aligned}
 \label{corTrans}
@@ -150,8 +150,8 @@ and now algebraic manipulations and comparing coefficients from the generalized 
 
 \begin{equation}
 \begin{aligned}
-    \beta_k &= \frac{s_y}{s_k}\beta_k^{*}  \forall k \in \{1,2,..,n\} \\\\\\\\
-    &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n
+    \beta_k &= \frac{s_y}{s_k}\beta_k^{*}  \forall k \in \{1,2,..,n\} \\\\
+    \beta_0 &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n
 \end{aligned}
 \end{equation}
 
@@ -417,7 +417,7 @@ Ah! now the the direct and indirect influences represented by $$NEF$$ is clear. 
 
 
 \begin{aligned}
-(NEF\ direct)_j &= a_j^2 \\\\\\\\
+(NEF\ direct)_j &= a_j^2 \\\\
 (NEF\ indirect)_j &= a_j\sum_{k\ne j}r_{jk}a_k
 \end{aligned}
 
