@@ -108,7 +108,7 @@ Lets represent each incoming email at time $$t$$ using feature vector $$x_t \in 
 
 No online learning text is complete without mention of **recommendation systems** which revolutionized entertainment and e-retail industry. Recommendation system problem can be cast as a matrix completion problem. Lets consider a user-item matrix $$X \in \mathbb{R}^{m\times n}$$ where we have $$m$$ customers and $$n$$ items (may be songs, movies etc).
 
-$$
+<script type="math/tex; mode=display">
 \begin{equation}
   X_{ij} =
     \begin{cases}
@@ -116,7 +116,7 @@ $$
       1, & \text{if customer $i$ likes item $j$}
     \end{cases}       
 \end{equation}
-$$
+</script>
 
 In online setting, at each iteration the algorithm outputs a preference matrix (its estimate of $$X$$) $$X_t \in \mathcal{K}$$ where $$\mathcal{K} \subset \{0,1\}^{m\times n}$$ (all possible 0-1 $$m\times n$$ matrix). Now, environment chooses a user-item pair $$(i_t, j_t)$$ along with the real preference for this pair $$y_t \in \{0,1\}$$. Thus the loss experienced by the algorihtm is
 
