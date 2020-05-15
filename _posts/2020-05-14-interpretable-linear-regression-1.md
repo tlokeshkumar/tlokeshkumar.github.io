@@ -49,46 +49,41 @@ Our main aim throughout the post will be to engage in answering **how each predi
 
 Lets take we have $$N$$ data samples and we write the above formulation in matrix form,
 
+<script type="math/tex; mode=display">
 \begin{equation}\begin{bmatrix}
-x_{10} & x_{11} & x_{12} & \dots & x_{1n} \\\\\\\\
-x_{20} & x_{11} & x_{22} & \dots & x_{2n} \\\\\\\\
-\vdots & \vdots & \vdots & \dots & \vdots \\\\\\\\
-\vdots & \vdots & \vdots & \dots & \vdots \\\\\\\\
+x_{10} & x_{11} & x_{12} & \dots & x_{1n} \\
+x_{20} & x_{11} & x_{22} & \dots & x_{2n} \\
+\vdots & \vdots & \vdots & \dots & \vdots \\
+\vdots & \vdots & \vdots & \dots & \vdots \\
 x_{N0} & x_{N1} & x_{N2} & \dots & x_{Nn}
 \end{bmatrix}
 \begin{bmatrix}
-\beta_0 \\\\\\\\
-\beta_1 \\\\\\\\
-\vdots \\\\\\\\
+\beta_0 \\
+\beta_1 \\
+\vdots \\
 \beta_n
 \end{bmatrix}
 +
 \begin{bmatrix}
-\epsilon_0 \\\\\\\\
-\epsilon_1 \\\\\\\\
-\vdots \\\\\\\\
-\vdots \\\\\\\\
+\epsilon_0 \\
+\epsilon_1 \\
+\vdots \\
+\vdots \\
 \epsilon_m
 \end{bmatrix}
 =
 \begin{bmatrix}
-y_1 \\\\\\\\
-y_2 \\\\\\\\
-\vdots \\\\\\\\
-\vdots \\\\\\\\
+y_1 \\
+y_2 \\
+\vdots \\
+\vdots \\
 y_N
 \end{bmatrix}
-\rightarrow
+\Longleftrightarrow
 X\vec{\beta}+\vec{\epsilon}=\vec{Y}
 \end{equation}
+</script>
 
-
-\begin{equation}
-\begin{aligned}
-    x &= 6 \\\\\\\\
-    y &= 8
-\end{aligned}
-\end{equation}
 
 
 
@@ -250,16 +245,16 @@ $$
 
 where $$C^{-1}$$ is the inverse correlation matrix. The square deviation (Residual Sum of Squares, $$RSS$$) can be represented in matrix form as,
 
-
+<script type="math/tex; mode=display">
 \begin{equation}
 \begin{aligned}
-    S^2 &= \left(\vec{y}-X\vec{a}\right)^T\left(\vec{y}-X\vec{a}\right) \\\\\\\\
-    &= \vec{y}^T\vec{y} - 2\vec{a}^T\left(X^T\vec{y}\right) + \vec{a}^T(X^TX)\vec{a} \\\\\\\\
+    S^2 &= \left(\vec{y}-X\vec{a}\right)^T\left(\vec{y}-X\vec{a}\right) \\
+    &= \vec{y}^T\vec{y} - 2\vec{a}^T\left(X^T\vec{y}\right) + \vec{a}^T(X^TX)\vec{a} \\
     &= 1 - 2\vec{a}^T\vec{r} + \vec{a}^TC\vec{a}
 \end{aligned}
 \label{sqError}
 \end{equation}
-
+</script>
 
 Let's code this and understand what we are exactly doing,
 
@@ -416,12 +411,12 @@ $$
 
 Ah! now the the direct and indirect influences represented by $$NEF$$ is clear. From the above equation, $$NEF_j = a_j^2 + a_j\sum_{k\ne j}r_{jk}a_k$$, which can be divided into direct and indirect counterparts,
 
-
+<script type="math/tex; mode=display">
 \begin{aligned}
-(NEF\ direct)_j &= a_j^2 \\\\
+(NEF\ direct)_j &= a_j^2 \\
 (NEF\ indirect)_j &= a_j\sum_{k\ne j}r_{jk}a_k
 \end{aligned}
-
+</script>
 
 Let's see the code to get an even more clear picture of whats going on.
 
