@@ -469,7 +469,7 @@ NEF_j < 0 \implies a_j^2 + a_j\sum_{k\ne j}r_{jk}a_k < 0 \implies a_j\sum_{k\ne 
 \end{equation}
 $$
 
-**Does $$NEF_j < 0$$ mean predictor $$j$$ must be removed from multiple regression formulation?**
+**Does $NEF_j < 0$ mean predictor $$j$$ must be removed from multiple regression formulation?**
 
 NO. We will show later in the post that **any additional variable increases the coefficient of multiple determination $$R^2$$**. $$NEF_j < 0$$ means that the definition of net effects as $$r_{yj}a_j$$ is inadequate and not completely representative of variable's influence. This calls for the modification of net effects formulation (motivation for incremental net effects)!
 
