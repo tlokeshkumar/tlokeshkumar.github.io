@@ -106,26 +106,26 @@ Can you think of any problem here? What if there are some variables in $$X$$ whi
 
 Correlation transformation is simple modification of usual feature normalization procedure in machine learning. In feature normalization we make sure that each feature is centered (0 mean) and unit standard deviation. Standard feature normalization is given by these equations below,
 
-
+<script type="math/tex; mode=display">
 \begin{equation}
 \begin{aligned}
-    (y_i)_{norm} &= \frac{y_i - \overline{y}}{s_y} \\\\
-    (x_{ik})_{norm} &= \frac{x_{ik} - \overline{x_k}}{s_k}
+    (y_i)_{norm} &= \frac{y_i-\overline{y}}{s_y} \\
+    (x_{ik})_{norm} &= \frac{x_{ik}-\overline{x_k}}{s_k}
 \end{aligned}
 \end{equation}
-
+</script>
 
 where $$\overline{y}, \overline{x_k}$$ are means of $$y, x_k$$ columns respectively, and $$s_y, s_k$$ are their respective standard deviations. The correlation transformation requires **only** one alteration, that is,
 
-
+<script type="math/tex; mode=display">
 \begin{equation}
 \begin{aligned}
-    y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i - \overline{y}}{s_y}\right) = \frac{1}{\sqrt{N-1}}(y_i)_{norm} \\\\
-    x_{ik}^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{x_{ik} - \overline{x_k}}{s_k}\right) = \frac{1}{\sqrt{N-1}}(x_{ik})_{norm}
+    y_i^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{y_i-\overline{y}}{s_y}\right)=\frac{1}{\sqrt{N-1}}(y_i)_{norm} \\
+    x_{ik}^{*} &= \frac{1}{\sqrt{N-1}}\left(\frac{x_{ik}-\overline{x_k}}{s_k}\right)=\frac{1}{\sqrt{N-1}}(x_{ik})_{norm}
 \end{aligned}
 \label{corTrans}
 \end{equation}
-
+</script>
 
 The regression model with the correlation transformed variables $$x_k^{*}, y^{*}$$ is called the **standardized regression model** and is defined formally as,
 
@@ -147,23 +147,15 @@ $$
 
 and now algebraic manipulations and comparing coefficients from the generalized regression model, we get,
 
+<script type="math/tex; mode=display">
 \begin{equation}
-\begin{aligned}
-    \beta_k &= \frac{s_y}{s_k}\beta_k^{*} \\\\  \forall k \in \{1,2,..,n\} \\\\\\
-    \beta_0 &= \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}_n
-\end{aligned}
-\label{exy}
+    \beta_k =
+    \begin{cases}
+        \overline{y} - \beta_1\overline{x}_1 - ... - \beta_{n}\overline{x}, & \text{k=0} \\
+        \frac{s_y}{s_k}\beta_k^{*} & \text{otherwise}
+    \end{cases}  
 \end{equation}
-
-
-\begin{equation}
-\begin{aligned}
-    S^2 &= \left(\vec{y}-X\vec{a}\right)^T\left(\vec{y}-X\vec{a}\right) \\\\\\\\
-    &= \vec{y}^T\vec{y} - 2\vec{a}^T\left(X^T\vec{y}\right) + \vec{a}^T(X^TX)\vec{a} \\\\\\\\
-    &= 1 - 2\vec{a}^T\vec{r} + \vec{a}^TC\vec{a}
-\end{aligned}
-\label{sqError}
-\end{equation}
+</script>
 
 
 Look below for a well-commented code implementing the correlation transform and standardizing the dataset
