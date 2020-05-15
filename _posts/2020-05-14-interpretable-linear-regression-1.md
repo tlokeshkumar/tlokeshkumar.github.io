@@ -463,11 +463,11 @@ Multicollinearity arrises when the feature variables (predictor variables) are h
 
 To understand the problems of multicollinearity better, lets investigate $$NEF$$ has to say. Multicollinearity can change the sign of $$a_j$$ to opposite to that of the pairwise correlation $$r_{yj}$$, which means $$a_jr_{yj} = (NEF)_j < 0$$. What does this mean in terms of direct and indirect influence interpretation of net effect? As direct influence term in $$NEF_j \ge 0$$, it essentially means, that indirect influence is $$< 0$$ and overpowers direct influence. Analysing this with help of $$\eqref{dir_indir_nef}$$, 
 
-$$
+<script type="math/tex; mode=display">
 \begin{equation}
 NEF_j < 0 \implies a_j^2 + a_j\sum_{k\ne j}r_{jk}a_k < 0 \implies a_j\sum_{k\ne j}r_{jk}a_k < -a_j^2
 \end{equation}
-$$
+</script>
 
 **Does $NEF_j < 0$ mean predictor $$j$$ must be removed from multiple regression formulation?**
 
