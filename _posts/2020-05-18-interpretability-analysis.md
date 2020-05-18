@@ -126,6 +126,7 @@ The same dataset but the input features are correlated. Notice how the NEF value
 
 Lets now aim to calculate the influence of $$x_n$$ (the last standardized variable) in the standardized regression model. The matrix $$C$$ (correlation matrix of all $$x$$'s) can be written in a block form,
 
+<script type="math/tex; mode=display">
 $$
 \begin{equation}
 C = \begin{pmatrix}
@@ -134,9 +135,11 @@ A & \vec{\rho} \\
 \end{pmatrix}
 \end{equation}
 $$
+</script>
 
 where $$A \in \mathbb{R}^{n-1 \times n-1}$$ matrix of correlation of $$(x_1, ... ,x_{n-1})$$  among themselves and $$\vec{\rho} \in \mathbb{R}^{n-1 \times 1}$$ is the correlation of $$(x_1, ... ,x_{n-1})$$ with $$x_n$$. Using the result from block matrix inversion, we get
 
+<script type="math/tex; mode=display">
 $$
 \begin{equation}
 C^{-1} = \begin{pmatrix}
@@ -146,9 +149,11 @@ A^{-1} + q^{-1}\vec{b}\ \vec{b}^T & -q^{-1}\vec{b} \\
 \label{cinv_block}
 \end{equation}
 $$
+</script>
 
 where,
 
+<script type="math/tex; mode=display">
 $$
 \begin{equation}
     \begin{aligned}
@@ -158,6 +163,7 @@ $$
     \label{blockInv}
 \end{equation}
 $$
+</script>
 
 Anything similar you can see with $$\vec{b}$$ in $$\eqref{blockInv}$$ and $$\vec{a}$$ in $$\eqref{stanLSSol}$$? Indeed! So $$\vec{b}$$ is the vector of regression coefficients when $$x_n$$ is regressed for, from other $$n-1$$ variables $$x_1, ..., x_{n-1}$$. Following the notations from $$\eqref{newStan}$$, $$\vec{b}$$ is the least squares solution for
 
@@ -179,6 +185,7 @@ $$
 
 Using $$\eqref{cinv_block}$$ in $$\eqref{stanLSSol}$$ for obtaining the solution for $$\eqref{newStan}$$,
 
+<script type="math/tex; mode=display">
 $$
 \begin{equation}
     \begin{aligned}
@@ -199,6 +206,7 @@ $$
     \label{inc_soln}
 \end{equation}
 $$
+</script>
 
 where $$\vec{r} \in \mathbb{R}^n$$ a vector of all correlations between $$\{x_1,...,x_n\}$$ and $$y$$. $$r_{y,-n} \in \mathbb{R}^{n-1}$$ is the first $$n-1$$ correlations in $$r_y$$ and $$r_{yn}$$ is the correlation between $$x_n$$ and $$y$$ (last element in $$r_y$$).
 
@@ -223,6 +231,7 @@ The interpretation of this model, is that without $$x_n$$ how other features $$x
 
 Calculating $$R^2$$ of the model $$\eqref{newStan}$$ using $$\eqref{r2_decomp}$$ ($$a$$ defined in $$\eqref{inc_soln}$$),
 
+<script type="math/tex; mode=display">
 $$
 \begin{equation}
     \begin{aligned}
@@ -239,6 +248,7 @@ $$
     \label{r2_marginal}
 \end{equation}
 $$
+</script>
 
 Now, what is $$R^2_{n,-n}$$ (i.e) the $$R^2$$ of model $$\eqref{n_1_model}$$? We can use the expressions $$\eqref{r2_decomp}$$ ($$\vec{a} \equiv \vec{\beta}, \vec{r} \equiv \vec{r}_{y,n-1}$$), and write it as,
 
