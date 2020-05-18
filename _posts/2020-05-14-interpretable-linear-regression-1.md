@@ -1,22 +1,33 @@
 ---
 layout: post
-title: "Interpretable Linear Regression: Net Effects"
+title: "Everything You Need To Know About Interpretability in Linear Regression: Net Effects"
 author: Lokesh Kumar
 date: '2020-05-14 15:02:00'
 category: 'Machine-Learning'
-summary: A regular problem in multiple regression is asserting the relative influence of the predictors in the model. Net Effects is a well-known technique that is used to measure the shares that each predictor have on the target variable in the coefficient of multiple determination.
+summary: Linear regression is by far one of the most used machine learning algorithms of all times. But a regular problem in multiple regression is asserting the relative influence of the predictors in the model. Wanna to know an easy way to detemine them on the fly? Go ahead and read the post!
 thumbnail: Interpretable Regression - 1.png
 comments: true
 ---
 # Contents
 
 {: #contents}
-* <a href="#standardized_models"><font size="5">Standardized Multiple Regression Model</font>
-* <a href="#r2_explanation"><font size="5">Revisiting R-squared for Regression Analysis</font>
-* <a href="#NetEffects"><font size="5">Net Effects</font>
-* <a href="#Multicollinearity"><font size="5">Problems caused by Multicollinearity</font>
+
+* <a href="#intro"><font size="5">Introduction</font></a>
+* <a href="#standardized_models"><font size="5">Standardized Multiple Regression Model</font></a>
+* <a href="#r2_explanation"><font size="5">Revisiting R-squared for Regression Analysis</font></a>
+* <a href="#NetEffects"><font size="5">Net Effects</font></a>
+* <a href="#Multicollinearity"><font size="5">Problems caused by Multicollinearity</font></a>
 
 Code used in the blog can be accessed on [GitHub](https://github.com/tlokeshkumar/interpretable-linear-regression)
+
+## Introduction
+{: #intro}
+<a href="#contents"><button>Back to Contents</button></a>
+
+
+Interpretability and explainability in machine learning is a trend right now, because of the demand to understand why and how did the machine learning algorithm predict the way it does. Why would anyone want to know that? Its because if you are taking a million-dollar decision (finance industry) or life-saving decision (medical industry), you cant rely on a model which is a black box. You would need to know what features influenced a machine learning algorithm and analyse whether is it relevant to human intelligence. For example, if you are rejecting a transaction as a fraudulent one, you are required to explain why did you reject and give reasons. You cannot reason out like 'my deep learning model has an accuracy of xxx% and an f-score of xxx in my test dataset, so I rejected this transaction'. When the machine learning algorithm is predicting that a patient is having cancer, the doctor needs to know why is the machine learning algorithm predicting that way so that doctor can use his experience and come to a conclusion of whether the disease is present or not. By now, you mostly would have understood the importance of this field. 
+
+We all know that linear regression is used even today and a widely accepted algorithm as an effective one. Even interpretation of the algorithm is quite straightforward when compared with deep neural networks and other ML algorithms. In this post, we will look into the famous net effect interpretability technique used in linear regression and in the following series of posts, understand the limitations of net effects and develop a more robust incremental net effects metric which performs better even in the case of multicollinearity (correlated input features).
 
 ## Standardized Multiple Regression Model
 {: #standardized_models}
@@ -480,3 +491,5 @@ As an example, let's take an example of a severely correlated dataset (synthetic
 In the above graph, you can see that NEF values for some predictors are **negative**, and since $$\eqref{r2_nef}$$ is valid irrespective of the presence of multicollinearity or not, we also notice some predictors having NEF values **$$> 1.0$$**. So **the notion of NEF values capturing influences of individual predictors breaks down.** 
 
 This calls for a more sophisticated and interesting measure called **Incremental Net Effects** which takes support from **co-operative game theory**, which I have also plotted in the above plot. You can notice how incremental net effects can spread the influence effectively among the predictors. Also, it has interesting properties like its always positive (even in the correlated case when net effects become negative) and like net effects, they sum up to $$R^2$$.
+
+Want to know how to approach problems involving interpretability in linear regression? Do check out [The In-Depth Guide to Interpretability Analysis in Linear Regression]({{ site.baseurl }}{% link _posts/2020-05-18-interpretability-analysis.md %})!
