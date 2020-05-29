@@ -192,7 +192,7 @@ Using $$\eqref{cinv_block}$$ in $$\eqref{stanLSSol}$$ for obtaining the solution
     \end{pmatrix}\\
     &=
     \begin{pmatrix}
-    A^{-1}\vec{r}_{y,-n} - q^{-1}(r_{yn}-\vec{b}^T\vec{r}_{y,-n})\vec{b})\\
+    A^{-1}\vec{r}_{y,-n} - q^{-1}(r_{yn}-\vec{b}^T\vec{r}_{y,-n})\vec{b}\\
     q^{-1}(r_{yn}-\vec{b}^T\vec{r}_{y,-n})
     \end{pmatrix}
     \end{aligned}
