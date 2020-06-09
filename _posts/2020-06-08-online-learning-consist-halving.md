@@ -4,24 +4,24 @@ title: "Decision Making based on Expert Advice: CONSIST & Halving"
 author: Lokesh Kumar
 date: '2020-06-08 13:00:00'
 category: 'Machine-Learning'
-summary: Given some number of experts who suggest you to take a binary decision, how will you take into account their advises and take an optimal decision? Seems like a life lesson!
-thumbnail: Introduction to Online Learning.png
-commments: true
+summary: Given some number of experts who suggest you take a binary decision, how will you take into account their advice and take an optimal decision? Seems like a life lesson!
+thumbnail: Consist and Halving.png
+comments: true
 ---
 ## Contents
 {: #contents}
 
 
 * <a href="#intro"><font size="5">Introduction to Online Decision Making</font></a>
-* CONSIST Algorithm
-* Halving Algorithm
-* Experimental Results
+* <a href="#CONSIST_Algorithm"><font size="5">CONSIST Algorithm</font></a>
+* <a href="#Halving_Algorithm"><font size="5">Halving Algorithm</font></a>
+* <a href="#Experimental_Results"><font size="5">Experimental Results</font></a>
 
 ## Introduction to Online Decision Making
 {: #intro}
 <a href="#contents"><button>Back to Contents</button></a>
 
-Assume that you are an investor in the stock market. You have $d$ expert friends who are experts in predicting whether investing on the stock market will be profitable or not for a particular day. We assume a stock market transaction to be complete in a single day (i.e) you listen to the advices of your $d$ experts and make a decision in the morning, execute the decision by afternoon, experience the results (profit/loss) by the end of the day. This repeats everyday, and your aim is to minimize the total number of days you suffered losses when you engaged in transaction. So pause a minute and think how will you approach such a problem?
+Assume that you are an investor in the stock market. You have $d$ expert friends who are experts in predicting whether investing on the stock market will be profitable or not for a particular day. We assume a stock market transaction to be complete in a single day (i.e) you listen to the advice of your $d$ experts and make a decision in the morning, execute the decision by afternoon, experience the results (profit/loss) by the end of the day. This repeats every day, and you aim to minimize the total number of days you suffered losses when you engaged in a transaction. So pause a minute and think how will you approach such a problem?
 
 Lets mathematically formulate the problem. Each expert gives his binary advice = $$\{0,1\}$$ to you in the beginning of the day. Here $0$ means he advices you not to invest on that day, because he is expecting a loss, when $1$, he asks you to go ahead and invest as he is expecting profit. You accumulate $d$ such advices into a vector $$x_t \in \{0,1\}^d$$, and then make your decision $$p_t \in \{0,1\}$$. Depending on the environment state (out of your control) you accept a profit or loss (consequences of your action $p_t$). You are the agent in the game. This in psuedocode format can be represented as,
 
@@ -53,7 +53,7 @@ One possible definition of $l(p_t,y_t)$ is,
 \end{equation}
 </script>
 
-The aim of the algorithm is to minimize sum loss over all timesteps.
+The algorithm aims to minimize sum loss over timesteps.
 
 <script type="math/tex; mode=display">
 \begin{equation}
@@ -61,7 +61,7 @@ loss = \frac{1}{T}\sum_{t=1}^Tl(p_t,y_t)
 \end{equation}
 </script>
 
-Before we look into the algorithms, lets go over some definitions to make analysis easier later.
+Before we look into the algorithms, let's go over some definitions to make analysis easier later.
 
 ## Mathematical Notations
 {: #Mathematical_Notations }
@@ -77,9 +77,9 @@ Before we look into the algorithms, lets go over some definitions to make analys
 {: #Assumptions }
 <a href="#contents"><button>Back to Contents</button></a>
 
-We assume that the environment is constraint and cannot be an free adversary. What does this mean and what's this constraint? (Note: environment and adversary are interchangably used)
+We assume that the environment is limited and cannot be a free adversary. What does this mean and what's this constraint? (Note: environment and adversary are interchangeably used)
 
-Assume in the previous example what happens when the environment/adversary decides opposite to $p_t$. That is, when the agent decides to invest, the environment ensures there is a loss, and the agent decides not to invest then the environment gives a profit which the agent missed by not investing. Under this setting, any online algorithm is meaningless as its bound to make a mistake because the Online Problem Setting (Algorithm 1), guarantees that the agent takes decision before the environment reveals the reward. 
+Assume in the previous example what happens when the environment/adversary decides opposite to $p_t$. That is, when the agent decides to invest, the environment ensures there is a loss, and the agent decides not to invest then the environment gives a profit which the agent missed by not investing. Under this setting, any online algorithm is meaningless as it's bound to make a mistake because the Online Problem Setting (Algorithm 1), guarantees that the agent decides before the environment reveals the reward. 
 
 To avoid this case, we must constraint the representative power of the adversary. How do we do that? We assume that the adversary is always consistent with one of the experts. In other words we have $h^{\*} \in \mathcal{H}$ which the adversary uses to generate all the target labels (loss/profit in our example) $y_t$ $(= h^{\*}(x_t))$.
 
@@ -106,7 +106,7 @@ The algorithm starts with a finite hypothesis class $\mathcal{H}$. The algorihtm
 \end{algorithm}
 " %}
 
-This algorithm maintains a set of hypothesis functions $H_t$ that are consistent. Its a simple algorithm which says, follow a $h$ until it makes a mistake (when it will be eliminated), the choose another one in $H_t$. In experts setting, each $h$ is an expert, so the agent follows a single expert till that expert makes a mistake and then switches on to another one. In this way we converge to the optimal $h^{*}$ (note the realizability assumption used here).
+This algorithm maintains a set of hypothesis functions $H_t$ that are consistent. Its a simple algorithm which says, follow a $h$ until it makes a mistake (when it will be eliminated), then choose another one in $H_t$. In experts setting, each $h$ is an expert, so the agent follows a single expert till that expert makes a mistake and then switches on to another one. In this way, we converge to the optimal $h^{*}$ (note the realizability assumption used here).
 
 ```python
 class CONSIST:
@@ -145,9 +145,9 @@ class CONSIST:
             self.mistake.append(0)
 ```
 
-**Whats the mistake bound of the algorithm $\mathcal{M}_{Consistent}(\mathcal{H})$?**
+**What's the mistake bound of the algorithm $\mathcal{M}_{Consistent}(\mathcal{H})$?**
 
-Recall, mistake bound of algorithm $\mathcal{A}$ on a hypothesis class $\mathcal{H}$ is the upper bound on the number of mistakes it makes on $\mathcal{H}$. CONSIST algorithm hass a mistake bound of
+Recall, mistake bound of algorithm $\mathcal{A}$ on a hypothesis class $\mathcal{H}$ is the upper bound on the number of mistakes it makes on $\mathcal{H}$. CONSIST algorithm has a mistake bound of
 
 
 <script type="math/tex; mode=display">
@@ -156,13 +156,13 @@ M_{CONSIST}(\mathcal{H}) \le \|\mathcal{H}\|-1
 \end{equation}
 </script>
 
-Though its easy to see why this is the case, it would be helpful to note that agent eliminates a function in $\mathcal{H}$ when it incurs a mistake. The maximum number of mistakes the algorithm can make is $\| \mathcal{H}\| -1$, as by realizability assumption we have a $h^{*} \in \mathcal{H}$ which perfectly mimics the adversary.
+Though it's easy to see why this is the case, it would be helpful to note that the agent eliminates a function in $\mathcal{H}$ when it incurs a mistake. The maximum number of mistakes the algorithm can make is $\| \mathcal{H}\| -1$, as by realizability assumption we have a $h^{*} \in \mathcal{H}$ which perfectly mimics the adversary.
 
 ## Halving Algorithm
 {: #Halving_Algorithm }
 <a href="#contents"><button>Back to Contents</button></a>
 
-Ok, lets see where we are now. We have figured out an algorithm that can find the best expert in $O(\|\mathcal{H}\|)$ mistakes. Is there any algorithm that can perform better than this bound? We will see that Halving algorithm reduces the mistake bound to $O(log \|\mathcal{H}\|)$. Its based on majority voting and necessarily requires finite $\mathcal{H}$.
+Ok, let's see where we are now. We have figured out an algorithm that can find the best expert in $O(\|\mathcal{H}\|)$ mistakes. Is there any algorithm that can perform better than this bound? We will see that Halving algorithm reduces the mistake bound to $O(log \|\mathcal{H}\|)$. It's based on majority voting and necessarily requires finite $\mathcal{H}$.
 
 {% include pseudocode.html id="3" code="
 \begin{algorithm}
@@ -220,11 +220,11 @@ class Halving:
 ```
 
 
-**Whats the mistake bound of the algorithm $\mathcal{M}_{Halving}(\mathcal{H})$?**
+**What's the mistake bound of the algorithm $\mathcal{M}_{Halving}(\mathcal{H})$?**
 
-Lets answer a related question, when will this algorithm make a mistake? Say at time $t$, the algorithm commits a mistake. As the algorihtm goes by majority vote, it means majority of the functions/predictors in $H_t$ have wrong predictions for $x_t$. Therefore majority functions $(\ge \|H_t\|/2)$ will be eliminated at $t$. 
+Let's answer a related question, when will this algorithm make a mistake? Say at time $t$, the algorithm commits a mistake. As the algorithm goes by majority vote, it means the majority of the functions/predictors in $H_t$ have wrong predictions for $x_t$. Therefore majority functions $(\ge \|H_t\|/2)$ will be eliminated at $t$. 
 
-Extending the argument, whenever the algorithm makes a mistake, atleast more than half of the active hypothesis class is eliminated.
+Extending the argument, whenever the algorithm makes a mistake, at least more than half of the active hypothesis class is eliminated.
 
 If $M$ is the total number of mistakes, then
 <script type="math/tex; mode=display">
@@ -233,9 +233,11 @@ If $M$ is the total number of mistakes, then
 \end{equation}
 </script>
 
-Similar to that of the calculation of time complexity of binary search, we conclude that $O(log\|\mathcal{H}\|)$
+Similar to that of the calculation of time complexity of the binary search, we conclude that $O(log\|\mathcal{H}\|)$
 
 ## Experimental Results
+{: #Experimental_Results }
+<a href="#contents"><button>Back to Contents</button></a>
 
 We create a sample dataset of around 1000 experts $(d=1000)$ and the experiment runs for $T=10000$ iterations. We use the same functions which we have shown in the algorithm's section and we will observe the results.
 
@@ -247,3 +249,8 @@ Plots of the number of mistakes vs. timesteps of the online algorithm. Note that
 </figcaption>
 </div>
 </figure>
+
+
+**What next?**
+
+Heard about VC-dimension, which is a very important concept in machine learning... it quantifies PAC-learnability. But how can we define Online Learnability? We need a new metric, which we call the **Littlestone's Dimension**. Nextly, we will look into Littlestones's dimension and its application.

@@ -16,10 +16,50 @@ layout: default
 <div class="col-lg-8 offset-md-2">
   <div class="jumbotron" style="text-align: center;">
     <h1 class="display-4">Hello, I'm {{site.author}} !</h1>
-    <h3> Just another student, but happens to be a <b>{{site.author_bio}}</b></h3>
+    {%- include github_star_button.html -%}
     <p class="lead" id="typewriteText"></p>
     <button class="btn btn-light btn-lg"><a href="/about"> About Me </a></button>
     <button class="btn btn-light btn-lg"><a href="/blog"> My Blog!! </a></button>
     <a href="#" class="rainbow-button" alt="Button"></a>
   </div>
 </div>
+
+<!-- <div class="col-lg-8 offset-md-2">
+  <section id="recent-articles">
+    <div id="recent-articles-header">
+      <div id="recent-articles-title">
+        <h1 class="card-title">Recent Articles</h1>
+      </div>
+      <div id="recent-articles-show-all">
+        <a class="btn btn-lg btn-dark" href="/blog"> View All </a>
+      </div>
+    </div>
+    <br />
+
+    <ul>
+      {% for post in site.posts limit:5 %}
+      <li class="article-card">
+        <a href="{{post.url}}" class="article-card-link">
+          <div id="article-container">
+            <div id="article-img">
+              <img
+                src="/assets/img/{{site.author_logo}}"
+                width="50px"
+                height="50px"
+              />
+            </div>
+            <div id="article-link">
+                <p class="recent-article-link">{{post.title}} <span style="color: #ccc; font-size: 15px;"> - <i><time datetime="{{ post.date }}" itemprop="datePublished">{{ post.date | date: "%b %-d, %Y" }}</time></i></span></p>
+              </div>
+              <div id="article-alert">
+              {% for cat in post.category limit:1 %}
+               <button class="btn btn-sm btn-dark">{{cat}}</button>
+              {% endfor %}
+              </div>
+          </div>Signup for Weekly Email Newsletters :D 
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+</div> -->
