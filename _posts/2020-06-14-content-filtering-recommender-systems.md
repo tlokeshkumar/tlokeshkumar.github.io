@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Understanding Recommender Systems: Content-Based Filtering"
+title: "Understanding Recommender Systems: Dynamic Content-Based Filtering"
 author: Lokesh Kumar
 date: '2020-06-14 21:00:00'
 category: 'Machine-Learning'
