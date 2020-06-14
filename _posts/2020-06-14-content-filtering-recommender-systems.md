@@ -2,21 +2,21 @@
 layout: post
 title: "Understanding Recommender Systems: Content-Based Filtering"
 author: Lokesh Kumar
-date: '2020-06-11 15:02:00'
+date: '2020-06-14 21:00:00'
 category: 'Machine-Learning'
-summary: Recommender Systems are used extensively in industry for thousands of different services from eCommerce giants like Amazon and Flipkart, music recommendation in Spotify, video recommendations in YouTube, movie recommendations by Netflix, etc. For any ML enthusiast, it's a must know.
+summary: Recommender Systems are used extensively in industry for thousands of different services from product recommendation for giants like Amazon and Flipkart, music recommendation in Spotify, video recommendations in YouTube, movie recommendations by Netflix, etc. For any ML enthusiast, it's a must know.
 thumbnail: content-based-recommender-systems.png
 comments: true
 ---
 # Contents
-
 {: #contents}
 
 * <a href="#Introduction"><font size="5">Introduction</font></a>
 * <a href="#Outline_of_the_Approach"><font size="5">Outline of the Approach</font></a>
 * <a href="#Item_Feature_Extraction"><font size="5">Item Feature Extraction</font></a>
-* <a href="#User_Modelling"><font size="5">User Modelling</font></a>
 * <a href="#Recommendation"><font size="5">Recommedation</font></a>
+* <a href="#User_Modelling"><font size="5">User Modelling</font></a>
+* <a href="#Conclusion"><font size="5">Conclusion</font></a>
 
 ## Introduction
 {: #Introduction}
@@ -30,9 +30,9 @@ These algorithms assist the user to navigate through the plethora of information
 {: #Outline}
 <a href="#contents"><button>Back to Contents</button></a>
 
-In this post, we will consider the problem of books recommendation and solve them with the help of content-based filtering. Here we have a set of items out of which we must rank items based on user preferences. This calls for representing both `items` and `user preferences` in numerical form to carry out our computation. We can use any feature extraction to get an effective representation of each of our products. 
+In this post, we will consider the problem of books recommendation and solve them with the help of content-based filtering. Here we have a set of items and we must rank items based on user preferences. This calls for representing both `items` and `user preferences` in numerical form to carry out our computation. We can use any feature extraction to get an effective representation of each of our products. 
 
-Ok, now we have the feature representations of each of the items. To give a head start, say the user reads a single book, say book $b_i$. The recommendation algorithm uses a `similarity metric` to compute the similarity between $b_i$ and all other books features in our corpus. Then the recommendation is straightforward, just recommend most relevant books according to the chosen `similarity metric`.
+Ok, now we have the feature representations of each of the items. To give a head start, say the user reads a single book, say book $b_i$. The recommendation algorithm uses a `similarity metric` to compute the similarity between book $b_i$ and all other books features in our corpus. Then the recommendation is straightforward, just recommend most relevant books according to the chosen `similarity metric`.
 
 A very important step we missed above is to model the user. A user's interests are generally complex and can change dynamically. To model the user's behaviour, (i.e) to find what's interesting to the user, we need feedback from the user. So we will look into types of feedback both explicit (asking the user to rate the recommendation) and implicit (by observing his behaviour). We will construct a feature vector which represents the user preferences (which changes dynamically) and use the same method used above to compute recommendations which dynamically keep up with users interests.
 
@@ -40,7 +40,7 @@ A very important step we missed above is to model the user. A user's interests a
 {: #Item_Feature_Extraction}
 <a href="#contents"><button>Back to Contents</button></a>
 
-As the name of the algorithm suggests, we must analyse the content of each item/document and effectively extract features from it. There are several ways to representing the text documents, but we will use a simple yet effective method, $vector-space\ model$. In the vector space model, a document $D$ is represented as a fixed $m$ dimensional vector, where each dimension represents a distinct word in the collection of documents. The $i^{th}$ entry in the document's feature vector, $w_i$ is the weight of the word representing the $i^{th}$ position, call it $t_i$. It's indicative of the importance in the feature. If in the document, word $t_i$ is not present, the $w_i=0$. How to calculate $w_i$s? 
+As the name of the algorithm suggests, we must analyse the content of each item/document and effectively extract features from it. There are several ways to representing the text documents, but we will use a simple yet effective method, $vector-space\ model$. In the vector space model, a document $D$ is represented as a fixed $m$ dimensional vector, where each dimension represents a distinct word (or a n-gram of words) in the collection of documents. The $i^{th}$ entry in the document's feature vector is $w_i$ which represents the weight of the word representing the $i^{th}$ position. The word assigned for the $i^{th}$ position is $t_i$ (for more general version, think of it as an entity which can be a word or combination of words). It's indicative of the importance of $t_i$ in the feature representation. If in the document, word $t_i$ is not present, the $w_i=0$. How to calculate $w_i$s? 
 
 $w_i$s are calculated using $tf-idf$ scheme. This can be expanded as Term Frequency and Inverse Document Frequency method. As you can see it consists of two parts, term frequency and inverse document frequency. So, let's reveal the $tf-idf$ equation.
 
@@ -51,16 +51,16 @@ w_i = tf_i . log\left(\frac{n}{df_i}\right)
 \end{equation}
 </script>
 
-In $$\eqref{tfidf}$$, $tf_i$ is the number of occurrences of word $t_i$ in document $D$, $n$ is the total number of documents and $df_i$ is the number of where word $t_i$ appears at least once. Ok, why is the equation structured the way it is?
+In $$\eqref{tfidf}$$, $tf_i$ is the number of occurrences of word $t_i$ in document $D$, $n$ is the total number of documents in our corpus. $df_i$ is the number of documents where word $t_i$ appears at least once. Ok, why is the equation structured the way it is?
 
-The two main characteristics are leveraged to justify $tf-idf$ equation $$\eqref{tfidf}$$,
+The two main characteristics of text documents are leveraged to justify $tf-idf$ equation $$\eqref{tfidf}$$,
 
-* More the number of times a word appears in a document, more it can influence the topics the document can represent. $(tf_i)$
-* More number of times a word appears in all the documents in the collection, more poorly it discriminates between the documents. $(log(n/df_i))$
+* More the number of times a word appears in a document, more it can influence the topics that the document represents. $(tf_i)$
+* More number of documents the word appears in the collection, more poorly it discriminates between the documents. $(log(n/df_i))$
 
 Let's take an example and understand this method.
 
-Consider $4$ books whose contents are represented as a list below. (pardon me for a single line books XD) Books and documents are used interchangeably.
+Consider $4$ books whose contents are represented as a list below. (pardon me for a single line books XD) Books and documents are used interchangeably thereafter.
 
 ```python
 # corpus[0] is the first book
@@ -89,7 +89,7 @@ Output:
 ['and', 'document', 'first', 'is', 'one', 'second', 'the', 'third', 'this']
 ```
 
-We have $9$ distinct words in the set of 4 documents. For each word and in each document we can calculate the term frequency $(tf)$ and the inverse document frequency $(idf)$. Lets constraint our analysis to the first document and its easy to extend the analysis to all the other documents. Below shown is the number of words of the vocabulary is present in the document.
+We have $9$ distinct words in the set of 4 documents. For each word and in each document we can calculate the term frequency $(tf)$ and the inverse document frequency $(idf)$. Lets constraint our analysis to the first document and its easy to extend the analysis to all the other documents. Below shown is the number of words of the vocabulary is present in the first document.
 
 ```
 {
@@ -105,7 +105,7 @@ We have $9$ distinct words in the set of 4 documents. For each word and in each 
 }
 ```
 
-The above dictionary gives the term frequency values of all the words in the corpus for the first document. For calculating the inverse document frequency, we need to know the number of times the words occur in all other documents. Let me display the dictionary which holds a list for each word, where each entry in that list represents whether that word is present in the corresponding document.
+The above dictionary gives the term frequency values of all the words in the corpus for the first document. For calculating the inverse document frequency, we need to know the number of times the words occur in all other documents. Let me display the dictionary which holds a list for each word, where each entry in that list represents whether that word is present in the corresponding document (represented by its index position in the list).
 
 ```
 {
@@ -161,7 +161,7 @@ w_i = tf_i . log\left(\frac{n+1}{df_i+1}\right)
 \end{equation}
 </script>
 
-The effect of adding `1` to the $idf$ in the equation above is that terms with zero $idf$, (i.e.), terms that occur in all documents in the corpus, will not be entirely ignored. 
+The effect of adding `1` to the $idf$ in the equation above is that terms with zero $idf$, (i.e.), terms that occur in all documents in the corpus, will not be entirely ignored. But, if this confuses you, you can proceed and use $$\eqref{tfidf}$$.
 
 **Ok, now we have $tf-idf$ feature vectors for all our documents in the corpus**. We have successfully extracted a numerical representation of the documents which can be used in our recommender system. In our dummy example, each document is represented by a vector $\in \mathbb{R}^9$ where $9$ is the number of words in our vocabulary. Let's move to the next section a much more exciting one, **Recommendation** !!
 
@@ -170,7 +170,7 @@ The effect of adding `1` to the $idf$ in the equation above is that terms with z
 {: #Recommendation}
 <a href="#contents"><button>Back to Contents</button></a>
 
-We will now jump right into building a simple recommender system. Our approach as given in [Outline](#Outline) is follows. We have a numerical representation of all the documents in our corpus. We will use a `similarity metric` that can provide us with how similar the document feature vectors are. There are many metrics out there which measure the similarity between two vectors. We will use the well known **cosine similarity**.
+We will now jump right into building a simple recommender system. Our approach as given in [Outline](#Outline) is as follows. We have a numerical representation of all the documents in our corpus. We will use a `similarity metric` that can provide us with how similar the document feature vectors are. There are many metrics out there which measure the similarity between two vectors. We will use the well known metric the **cosine similarity**.
 
 Cosine similarity of two vectors $\vec{a}$ and $\vec{b}$ is the cosine of the angle made by these vectors. From basic linear algebra,
 
@@ -251,11 +251,11 @@ Till now, what we have done is, we have taken an item and recommended similar it
 
 Explicit feedback requires users to provide a certain rating by evaluating the documents which the user might not always be interested. Implicit feedback is the user's interest inferred by observing the user's actions, which is convenient for the user but difficult to interpret and analyse algorithmically.
 
-Explicit feedback is might not be a good choice because users may have to rate the items which they may be reluctant. Moreover, their ratings expire quickly. This means that the user's interests are dynamic and just because he rated a book well doesn't mean that he would always be reading similar books for the rest of his life. So it's advantageous to learn user model from implicit feedback (observing user actions).
+Explicit feedback might not be a good choice because users may have to rate the items which they may be reluctant to do so, in the first place. Moreover, their ratings generally expire quickly. This means that the user's interests are dynamic and just because he rated a book well doesn't mean that he would always be reading similar books for the rest of his life. So it's advantageous to learn user model from implicit feedback (observing user actions).
 
-Another issue to tackle is the **availability of negative examples**. Say a user reads a book for a considerable amount of time. This is a strong indication that the user is interested in the book (positive example). Users ignoring the links to the documents or reading for documents for can be seen as a hint that he may not be interested. There is no strong evidence whatsoever to assert the same because he could have ignored the link to look at it back later or haven't noticed at all, he could have read documents for a short duration because it could be similar to other documents he has seen previously, but still, him being interested in the topic. **Therefore including potential negative examples can end up making modelling the user very much difficult, so we must model the user only with sure positive examples.**
+Another issue to tackle is the **availability of negative examples**. Say a user reads a book for a considerable amount of time. This is a strong indication that the user is interested in the book (positive example). Users ignoring the links to the documents or reading a document for a short span can be seen as a hint that he may not be interested. There is no strong evidence whatsoever to assert the same because he could have ignored the link to look at it later or haven't noticed at all. He could have read documents for a short duration because it could be similar to other documents he has seen previously, but still, him being interested in the topic. **Therefore including potential negative examples can end up making modelling the user very much difficult, so we must model the user only with sure positive examples.**
 
-Ok, now that we understood the basics of feedback based user modelling in recommender systems, we can discuss one simple way to model the user who is navigating your book store. Each user is represented by a vector $P_t$ of dimension equal to that of the document $tfidf$ features dimension. Initially, when the user visits for the first time, you have no clue as to what the user's interests are. So the vector is empty (full of zeros). When the interacts with the article for a considerable amount fo time, then the update equation is,
+Ok, now that we understood the basics of feedback based user modelling in recommender systems, we can discuss one simple way to model the user who is navigating your book store website. Each user is represented by a vector $P_t$ of dimension equal to that of the document $tfidf$ features dimension. Initially, when the user visits for the first time, you have no clue as to what the user's interests are. So the user profile $P_0$ is empty (full of zeros). When the interacts with the article for a considerable amount fo time, then the update equation is,
 
 
 <script type="math/tex; mode=display">
@@ -265,16 +265,21 @@ Ok, now that we understood the basics of feedback based user modelling in recomm
 \end{equation}
 </script>
 
-where $F_D$ is the $tfidf$ feature vector of the document $D$. The value of $\beta$ represents the relative importance of a document to the user. It can be determined using explicit feedback by asking the user to rate the document when he tries to exit the book. It can also be modelled using implicit feedback. For example, the recommender system Slider set $\beta = -3$ if the user deleted the document after reading, set to $0.5$ if the user just reads the article. Setting $\beta=1$ can perform well in many cases.
+where $F_D$ is the $tfidf$ feature vector of the document $D$ which the user interacted. The value of $\beta$ represents the relative importance of a document to the user. It can be determined using explicit feedback by asking the user to rate the document when he tries to exit the book. It can also be modelled using implicit feedback. For example, the recommender system Slider set $\beta = -3$ if the user deleted the document or rated poorly after reading, set to $0.5$ if the user just reads the article. Setting $\beta=1$ can perform well in many cases.
 
-$\alpha$ is the forgetting factor or how the previous user interests diminish with time. So by definition $\alpha \in [0,1]$. The lower the alpha, the more rapidly the user interests change with his present actions. If $\alpha=0$, the recommendations are based completely on the current book the user last interacted with.
+$\alpha$ is the forgetting factor. It determines how the user's previous interests and interactions with the recommender system diminish with time. So by definition $\alpha \in [0,1]$. The lower the alpha, the more rapidly the user interests 'forget' about the past and modify his interests dynamically with his present actions. If $\alpha=0$, the recommendations are based completely on the current book the user last interacted with (with complete disregard to his past actions).
 
-Some factors which can be considered in the recommender systems:
+
+## Conclusion
+{: #Conclusion}
+<a href="#contents"><button>Back to Contents</button></a>
+
+To develop more competitive recommender systems some factors which can be considered in the modelling can be:
 
 * **Similarity** between the document feature vector and the user profile vector as constructed from $$\eqref{userprofile}$$.
 
 * **Novelty** of a document which can be determined by the existence of information in a document which is new to the user
 
-* **Proximity** of the document, can be applied when there is a graph structure or an ordered relation among the documents. In the case of web-page recommendation, the webpages are arranged in a graph and the number of links separating the two websites gives a distance notion.
+* **Proximity** of the document, can be applied when there is a graph structure or an ordered relation among the documents. In the case of web-page recommendation, the webpages are arranged in a graph and the number of links separating the two websites gives a distance interpretation.
 
-This completes the holistic coverage of content-based filtering for recommendation systems. Please engage in comments if you would like to. The next topic in this series is Collaborative filtering, Hybrid Recommendation methods, Multi-Arm Bandits based recommendation which inturn covers Graph and Networked Bandits, etc.
+This completes the holistic coverage of content-based filtering for recommendation systems. Please engage in comments if you would like to. The next topic in this series is Collaborative filtering, Hybrid Recommendation methods, Multi-Arm Bandits based recommendation which inturn covers Graph and Networked Bandits, Visual deep recommendation, etc.
